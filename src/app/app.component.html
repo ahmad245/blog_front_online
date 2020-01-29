@@ -1,0 +1,9 @@
+<div class="app-container">
+        <app-spinner *ngIf="showLoadingIndicator" ></app-spinner>
+        <app-header class="app"></app-header>
+        <div class="route-outler">
+                <router-outlet></router-outlet>
+        </div>
+
+        <app-footer></app-footer>
+</div>
