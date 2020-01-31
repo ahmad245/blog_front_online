@@ -4,7 +4,8 @@
     </a>
     <div class="post-meta-info">
         <a class="author"> {{post?.author.firstName}} </a>
-        <span class="date">{{post.date | date: 'longDate'}}</span>
+        <span class="date">{{post.date | date: 'longDate' }}</span>
+        <span class="date">{{post.date | timeago:live }}</span>
       </div>
     <ng-content></ng-content>
   </div>

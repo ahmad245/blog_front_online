@@ -6,9 +6,7 @@ import { Directive, TemplateRef, ViewContainerRef, OnInit, Input } from '@angula
 })
 export class AppShowAuthedDirective implements OnInit {
   condition:boolean;
- @Input() set  appShowAuthed(condition:boolean){
-  this.condition=condition;
- }
+
   constructor(
     private templateRef:TemplateRef<any>,
     private viewContainer:ViewContainerRef,
@@ -16,6 +14,9 @@ export class AppShowAuthedDirective implements OnInit {
   ) { }
   ngOnInit(): void {
   this.uS.isAuthenticated.subscribe((isAuthenticated)=>{
+     console.log(isAuthenticated);
+     console.log('isAuthenticated');
+     
     if(isAuthenticated && this.condition || !isAuthenticated && !this.condition)
     {
       this.viewContainer.createEmbeddedView(this.templateRef)
@@ -25,4 +26,8 @@ export class AppShowAuthedDirective implements OnInit {
     }
   })
   }
+  @Input() set  appShowAuthed(condition:boolean){
+    this.condition=condition;
+   }
+
 }

@@ -1,3 +1,4 @@
+import { IUser } from './../../core/models/user';
 import { UserService } from './../../core/services/user.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
@@ -16,6 +17,7 @@ export class SettingsComponent implements OnInit {
   // errors: Errors = {errors: {}};
   isSubmitting = false;
   authForm: FormGroup;
+  user:IUser;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -25,26 +27,42 @@ export class SettingsComponent implements OnInit {
     this.createForm=this.fb.group({
       _id:[''],
       
-        name:['',[Validators.required,Validators.minLength(1)]],
-        bio:['',[Validators.required,Validators.minLength(1)]],
-        urlImg:['',[Validators.required,Validators.minLength(1)]],
-        username:['',[Validators.required,Validators.minLength(3),Validators.email]],
-        phone:['',[Validators.required,Validators.minLength(3)]],
-        password:['',[Validators.required,Validators.minLength(6)]],
-        confirmPassword:['',Validators.required],
-        address:['',[Validators.required,Validators.minLength(1)]],
-        gender:['',Validators.required]
-        
+        firstName:['',[Validators.required,Validators.minLength(1)]],
+        lastName:['',[Validators.required,Validators.minLength(1)]],
+        email:['',[Validators.required,Validators.minLength(1)]],
       });
    }
 
   ngOnInit() {
+    this.user= this.uS.getCurrentUser();
+     console.log(this.user);
+     if(this.user){
+
+       this.createForm.patchValue({
+        _id: this.user.id,
+        firstName: this.user.firstName,
+        lastName: this.user.lastName,
+        email: this.user.email,
+       
+      })
+     }
+     
   }
   logout() {
     this.uS.purgeAuth();
     this.router.navigateByUrl('/');
   }
   onSubmit(){
-    
+    let user={
+      id:this.user.id,
+      firstName:this.createForm.value.firstName,
+      email:this.createForm.value.email,
+      lastName:this.createForm.value.lastName,
+    }
+    this.uS.put(user.id,user).subscribe((data)=>{
+      console.log(data);
+      this.logout();
+      
+    })
   }
 }

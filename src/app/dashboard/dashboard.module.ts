@@ -6,11 +6,12 @@ import { PostTypesBoardComponent } from './post-types-board/post-types-board.com
 import { PostsBoardComponent } from './posts-board/posts-board.component';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { RolesComponent } from './roles/roles.component';
+import { CreateUserComponent } from './users-board/create-user/create-user.component';
 
 
 
 @NgModule({
-  declarations: [UsersBoardComponent, PostTypesBoardComponent,PostsBoardComponent, RolesComponent],
+  declarations: [UsersBoardComponent, PostTypesBoardComponent,PostsBoardComponent, RolesComponent, CreateUserComponent],
   imports: [
     SharedModule,
     DashboardRoutingModule

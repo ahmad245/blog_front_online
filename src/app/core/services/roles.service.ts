@@ -21,7 +21,7 @@ export class RolesService {
       // .valueChanges.pipe(map(response=>response.data))
     }
     getById(id){
-      // return this.gQLService.query(this.RolesQuerie.RolesById(['name']),{id})
+      
     }
     // post(name:string){
     //  return this.gQLService.mutate(this.RolesMutaion.addRoles,{name}, 

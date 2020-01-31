@@ -21,3 +21,38 @@
 @import "./sass/abstracts/reset";
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+app-spinner{
+    position: fixed;
+    top: 0%;
+    left: 0%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.example-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.example-container > * {
+  width: 100%;
+}
+.options{
+    width: 80% !important;
+}
+.btn-dialog-close{
+  width: 45px;
+  min-width: 0px !important;
+  height: 40px;
+  padding: 0px !important;
+}
+.fill-remaining-space {
+/* This fills the remaining space, by using flexbox. 
+   Every toolbar row uses a flexbox row layout. */
+flex: 1 1 auto;
+}
+.tootlbar-header{
+margin-bottom: 10px;
+}

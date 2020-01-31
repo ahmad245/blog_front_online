@@ -1,3 +1,4 @@
+import { CreateUserComponent } from './users-board/create-user/create-user.component';
 import { UsersBoardComponent } from './users-board/users-board.component';
 import { PostsBoardComponent } from './posts-board/posts-board.component';
 import { Routes, RouterModule } from '@angular/router';
@@ -8,7 +9,8 @@ import { PostTypesBoardComponent } from './post-types-board/post-types-board.com
 const routes:Routes=[
   {path:'',component:PostsBoardComponent},
   {path:'users',component:UsersBoardComponent},
-  {path:'postTypes',component:PostTypesBoardComponent}
+  {path:'postTypes',component:PostTypesBoardComponent},
+  {path:'createUser',component:CreateUserComponent},
 ]
 
 @NgModule({

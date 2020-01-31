@@ -16,9 +16,10 @@ export class PostListComponent implements OnInit, OnDestroy {
   pageSize = 5;
   totalItem = 0;
   page = 1;
+  
   pageSizeOptions = [1, 2, 5, 10, 25, 100];
   pagination=true;
-  isLoading = true;
+  isLoading = false;
   search: any;
   @Input() postConfig: IPostConfig;
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;

@@ -8,6 +8,7 @@ import {  IPost } from 'src/app/core';
 })
 export class PostMetaComponent implements OnInit {
   @Input() post:IPost;
+  live=true;
   constructor() { }
 
   ngOnInit() {

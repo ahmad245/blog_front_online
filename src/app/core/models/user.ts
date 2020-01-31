@@ -11,5 +11,5 @@ export interface IUser{
     posts?:IPost;
     comments?:IComment
     token?:string;
-    roles?:[];
+    roles?:any[];
 }

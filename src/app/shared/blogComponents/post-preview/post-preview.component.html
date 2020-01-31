@@ -11,7 +11,7 @@
         </div>
         <a class="preview-link">
             <h1>{{post.title}}  </h1>
-            <p>{{post.content | shorten:50}}  </p>
+            <p [innerHtml]="post.content | shorten:50">  </p>
             <a [routerLink]="['/post',post.id]" class="btn-text">Learn more &rarr;</a>
             <mat-chip-list aria-label="Fish selection">
                 <mat-chip color="accent" selected>tag 1</mat-chip>

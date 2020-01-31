@@ -51,11 +51,11 @@ subscription=new Subscription();
   ) { }
 
   ngOnInit() {
-    // this.subscription.add(
-    //   this.pTS.getAll().subscribe((response) => {
-    //   this.postTypes = response.blogTypes;
-    // })
-    // );
+    this.subscription.add(
+      this.pTS.getAll().subscribe((response) => {
+        this.postTypes = response['hydra:member'];
+      })
+    );
   }
     
   addItem(input: HTMLInputElement) {

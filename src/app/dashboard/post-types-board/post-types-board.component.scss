@@ -9,8 +9,15 @@
  width: 50%;
 }
 .list-item-todo{
-    display: flex;
+    display: flex !important;
+    justify-content: space-between !important;
 
+}
+::ng-deep .mat-nav-list .mat-list .mat-list-item .mat-list-item-content{
+    display: flex !important;
+    justify-content: space-between !important;
+    flex-flow: 1;
+    width: 100%;
 }
 .span-todo{
     flex-flow: 1;

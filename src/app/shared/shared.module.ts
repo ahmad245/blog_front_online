@@ -27,6 +27,7 @@ import { ConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog.
 import { ShortenPipe } from './pipes/shorten.pipe';
 import { MarkdownPipe } from './pipes/markdown.pipe';
 import { ConfirmTokenComponent } from './dialogs/confirm-token.component';
+import { TimeagoModule } from 'ngx-timeago';
 
 
 
@@ -65,6 +66,7 @@ import { ConfirmTokenComponent } from './dialogs/confirm-token.component';
     RouterModule,
     MaterialModule,
     QuillModule.forRoot(),
+    TimeagoModule.forRoot(),
     MatFileUploadModule
   ],
   exports:[
@@ -91,6 +93,7 @@ import { ConfirmTokenComponent } from './dialogs/confirm-token.component';
       ShortenPipe,
       MarkdownPipe,
       
+      TimeagoModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,

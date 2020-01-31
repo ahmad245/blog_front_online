@@ -19,7 +19,7 @@ export class PostsBoardComponent implements OnInit {
 
  
   subscription = new Subscription();
-  pageSize = 1;
+  pageSize = 5;
   totalItem = 0;
   page = 1;
   pageSizeOptions = [1, 2, 5, 10, 25, 100];
@@ -68,13 +68,15 @@ export class PostsBoardComponent implements OnInit {
   }
 
   delete(row) {
+   
+    
     this.dialogService.openDialog('are you sur to delete ?').afterClosed().subscribe((res) => {
 
 
       if (res) {
         this.pS.delete(row.id).subscribe(
           res => {
- 
+            this.listData.data=this.listData.filteredData.filter(el=>el.id!==row.id);
             this.toastr.success('Votre matière a été delete avec succès.', 'Success');
           },
           err => {

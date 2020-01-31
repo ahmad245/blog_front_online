@@ -1,6 +1,6 @@
 import { IRoles } from './../../core/models/roles';
 import { IPost } from './../../core/models/post';
-import { Component, OnInit, ContentChild, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, ContentChild, ViewChild, TemplateRef, OnDestroy } from '@angular/core';
 import { MatTableDataSource, MatSort, MatPaginator, MatDialog, PageEvent, MatDialogConfig } from '@angular/material';
 import { Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
@@ -30,17 +30,17 @@ export interface PeriodicElement {
     ]),
   ],
 })
-export class UsersBoardComponent implements OnInit {
+export class UsersBoardComponent implements OnInit,OnDestroy {
   value = 'Search';
-  displayedColumns:string[]=["name","email","roles", "isAdmin","actions"];
+  displayedColumns:string[]=["firstName","lastName","email","roles","actions"];
 
   expandedElement: PeriodicElement | null;
  subscription=new Subscription();
- pageSize = 1;
+ pageSize = 5;
   totalItem = 0;
   page = 1;
   pageSizeOptions = [1, 2, 5, 10, 25, 100];
-
+  pagination=true;
   isLoading = true;
 superAdmin="superAdmin";
   listData:MatTableDataSource<any>;
@@ -60,38 +60,19 @@ superAdmin="superAdmin";
    }
 
    ngOnInit() {
-   
-  
-   
-  //   this.isLoading=true;
-
-  //  this.subscription.add( 
-  //   this.uS.getAll(this.page, this.pageSize)
-  //   .subscribe((response) => { 
-  //     console.log(response.data.users.users);
-      
-  //         this.listData=new MatTableDataSource(response.data.users.users);
-  //         this.listData.sort=this.sort;
-  //         this.isLoading= response.loading;
-  //         this.totalItem=response.data.users.total;
-
-  //    })
-     
- 
-       
-  //      )
-  
-
-   
+    this.isLoading = true;
+    this.uS.getAll(this.pagination, this.pageSize,this.page);
+  this.subscription.add( this.uS.users.subscribe((data)=>{
+        if(data){
+          this.subscribeUser(this.uS.allUser)
+        }
+      })
+  )
   }
 
   openDialog(){
-    
-    
-    
-  
-   
   }  
+
   update(row){
     
     const dialogConfig = new MatDialogConfig();
@@ -107,23 +88,23 @@ superAdmin="superAdmin";
   }
 
   delete(row) {
-    // this.dialogService.openDialog('are you sur to delete ?').afterClosed().subscribe((res) => {
-    //   console.log(res);
+    this.dialogService.openDialog('are you sur to delete ?').afterClosed().subscribe((res) => {
+      console.log(res);
       
-    //   if (res) {
-    //     this.uS.delete(row.id,this.page,this.pageSize).subscribe(
-    //             res => {
+      if (res) {
+        this.uS.delete(row.id).subscribe(
+                res => {
               
-    //             this.toastr.success('Votre matière a été delete avec succès.', 'Success');
-    //           },
-    //           err => {
+                this.toastr.success('Votre matière a été delete avec succès.', 'Success');
+              },
+              err => {
                
-    //             this.toastr.error(err.message, 'Error occured');
+                this.toastr.error(err.message, 'Error occured');
 
-    //           })
+              })
     
-    //         }
-    // })
+            }
+    })
 
   }
 
@@ -138,28 +119,32 @@ superAdmin="superAdmin";
   }
 
   onChangePage(pageData: PageEvent) {
-  //   this.isLoading = true;
-  //   this.page = pageData.pageIndex + 1;
-  //   this.pageSize = pageData.pageSize;
-  //   this.totalItem = pageData.length;
-
-   
-  //    this.subscription.add(
-  //       this.uS.getAll(this.page, this.pageSize)
-  //     .subscribe((response) => { 
-      
-  //       this.listData=new MatTableDataSource(response.data.users.users);
-  //       this.listData.sort=this.sort;
-  //       this.isLoading= response.loading;
-  //       this.totalItem=response.data.users.total;
-
-
-  //  })
-  //    )
-
+  
+    this.isLoading = true;
+    this.page = pageData.pageIndex + 1;
+    this.pageSize = pageData.pageSize;
+    this.totalItem = pageData.length;
+    this.uS.getAll(this.pagination, this.pageSize,this.page);
+  this.subscription.add(  
+    this.uS.users.subscribe((data)=>{
+      if(data){
+        this.subscribeUser(this.uS.allUser)
+      }
+    })
+  )
+  
+  
   }
 
- 
+  subscribeUser(response) {
+    console.log(response);
+    this.listData = new MatTableDataSource(response);
+    this.listData.sort = this.sort;
+    // this.totalItem = response["hydra:totalItems"];
+    this.isLoading = false;
+    
+    
+  }
 
   ngOnDestroy(){
     this.subscription.unsubscribe();

@@ -11,52 +11,45 @@
                         <div class="example-container">
                             <!-- ///////////////url image//////////////// -->
                             <mat-form-field hintLabel="Max 10 characters">
-                                <input matInput #urlImg placeholder="URL of profile picture" formControlName="urlImg">
-                                <mat-hint align="end">{{name.value?.length || 0}}/255</mat-hint>
+                                <input matInput #firstName placeholder=" Enter Your First Name" formControlName="firstName">
+                                <mat-hint align="end">{{firstName.value?.length || 0}}/255</mat-hint>
 
-                                <mat-error *ngIf="createForm.controls['urlImg'].errors?.minlength">Minimum 3 charactor
+                                <mat-error *ngIf="createForm.controls['firstName'].errors?.minlength">Minimum 3 charactor
                                 </mat-error>
-                                <mat-error *ngIf="createForm.controls['urlImg'].errors?.required">this field is required
+                                <mat-error *ngIf="createForm.controls['firstName'].errors?.required">this field is required
                                 </mat-error>
 
                             </mat-form-field>
                             <!-- /////////////////////////////////////////NAME////////////////////////////////////////////////// -->
                             <mat-form-field hintLabel="Max 10 characters">
-                                <input matInput #name placeholder="Enter Your Name*" formControlName="name">
-                                <mat-hint align="end">{{name.value?.length || 0}}/255</mat-hint>
+                                <input matInput #lastName placeholder="Enter Your Last Name*" formControlName="lastName">
+                                <mat-hint align="end">{{lastName.value?.length || 0}}/255</mat-hint>
 
-                                <mat-error *ngIf="createForm.controls['name'].errors?.minlength">Minimum 3 charactor
+                                <mat-error *ngIf="createForm.controls['lastName'].errors?.minlength">Minimum 3 charactor
                                 </mat-error>
-                                <mat-error *ngIf="createForm.controls['name'].errors?.required">this field is required
+                                <mat-error *ngIf="createForm.controls['lastName'].errors?.required">this field is required
                                 </mat-error>
 
                             </mat-form-field>
-                            <!-- /////////////////////////////////////////bio////////////////////////////////////////////////// -->
-
-                            <mat-form-field hintLabel="Max 10 characters">
-
-                                <textarea matInput placeholder="Textarea" formControlName="bio"></textarea>
-
-
-                            </mat-form-field>
+                          
                             <!-- /////////////////////////////////////////EMAIL(UserNAME)////////////////////////////////////////////////// -->
 
                             <mat-form-field hintLabel="Max 10 characters">
-                                <input matInput #email placeholder="Enter Your Email*" formControlName="username">
+                                <input matInput #email placeholder="Enter Your Email*" formControlName="email">
                                 <mat-hint align="end">{{email.value?.length || 0}}/255</mat-hint>
 
-                                <mat-error *ngIf="createForm.controls['username'].errors?.minlength">Minimum 3 charactor
+                                <mat-error *ngIf="createForm.controls['email'].errors?.minlength">Minimum 3 charactor
                                 </mat-error>
-                                <mat-error *ngIf="createForm.controls['username'].errors?.required">this field is
+                                <mat-error *ngIf="createForm.controls['email'].errors?.required">this field is
                                     required
                                 </mat-error>
-                                <mat-error *ngIf="createForm.controls['username'].errors?.email">Email not valid
+                                <mat-error *ngIf="createForm.controls['email'].errors?.email">Email not valid
                                 </mat-error>
 
                             </mat-form-field>
                             <!-- /////////////////////////////////////////PASSWORD////////////////////////////////////////////////// -->
 
-                            <mat-form-field hintLabel="Max 10 characters">
+                            <!-- <mat-form-field hintLabel="Max 10 characters">
                                 <input matInput [type]="hide ? 'password' : 'text'" #password
                                     placeholder="Enter Your password*" formControlName="password">
                                 <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}
@@ -67,7 +60,7 @@
                                 <mat-error *ngIf="createForm.controls['password'].errors?.required">this field is
                                     required
                                 </mat-error>
-                            </mat-form-field>
+                            </mat-form-field> -->
 
 
 

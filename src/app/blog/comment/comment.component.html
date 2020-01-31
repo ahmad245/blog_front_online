@@ -19,6 +19,9 @@
             <span class="date-posted">
                {{comment.date | date: 'longDate'}} 
                </span>
+               <span class="date-posted2">
+                {{comment.date | timeago:live}} 
+                </span>
        </div>     
       
       <!-- [hidden]="!canModify" -->
@@ -26,7 +29,7 @@
             <!-- (click)="deleteClicked()" -->
        
       <span class="space"></span>
-      <button mat-raised-button color="warn" type="submit">
+      <button [hidden]="!canModify" mat-raised-button color="warn" type="submit" (click)="deleteClicked()">
         <mat-icon >delete</mat-icon>
       </button>
     </div>

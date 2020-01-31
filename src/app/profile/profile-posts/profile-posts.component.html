@@ -1,2 +1,16 @@
-<app-post-list></app-post-list>
+<!-- <app-post-list></app-post-list> -->
 
+<div class="post_list">
+    <app-spinner *ngIf="isLoading"  ></app-spinner>
+  <app-post-preview   *ngFor="let post of posts" [post]=post ></app-post-preview>
+  
+  <mat-paginator 
+   
+    [pageSize]="pageSize"
+    [pageSizeOptions]="pageSizeOptions" 
+    [length]="totalItem" showFirstLastButtons 
+    (page)="onChangePage($event)"
+    >
+  </mat-paginator>
+  <div>{{search}}</div>
+  </div>

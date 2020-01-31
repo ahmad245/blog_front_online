@@ -1,3 +1,4 @@
+import { ProfileModule } from './profile';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -26,6 +27,7 @@ import { AppRoutingModule } from './app-routing.module';
 import {AuthModule  } from './auth/auth.module';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
+import { TimeagoModule } from 'ngx-timeago';
 
 
 
@@ -44,7 +46,9 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
     HomeModule,
     MaterialModule,
     SharedModule,
+    ProfileModule,
     ToastrModule.forRoot(),
+    TimeagoModule.forRoot(),
     StoreModule.forRoot(reducers, {
       metaReducers, 
       runtimeChecks: {

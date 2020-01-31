@@ -11,6 +11,9 @@ import { ProfileComponent } from './profile/profile.component';
   imports: [
     ProfileRoutingModule,
     SharedModule
+  ],
+  exports:[
+    ProfilePostsComponent
   ]
 })
 export class ProfileModule { }

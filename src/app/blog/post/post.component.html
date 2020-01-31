@@ -46,20 +46,26 @@
 
 
         <!-- *appShowAuthed="true" -->
-        <div>
-
+        <div *appShowAuthed="true"  @todosAnimation class="todo">
+          <h3>Comments</h3>
           <!-- <app-list-errors [errors]="commentFormErrors"></app-list-errors> -->
-          <form class="card comment-form">
+          <form class="card comment-form" [formGroup]="createForm" (ngSubmit)="addComment()" >
             <!-- [disabled]="isSubmitting" -->
-            <fieldset>
+            <fieldset [disabled]="isSubmitting">
               <div class="card-block">
-                <textarea class="form-control" placeholder="Write a comment..." rows="3"></textarea>
+                <textarea   (@todoAnimation.start)="animationStarted($event)"  (@todoAnimation.done)="animationDone($event)" #message class="form-control" formControlName="message" placeholder="Write a comment..." rows="3"></textarea>
+                <mat-hint align="end">{{message.value?.length || 0}}/255</mat-hint>
+
+                <mat-error *ngIf="createForm.controls['message'].errors?.minlength">Minimum 3 charactor
+                </mat-error>
+                <mat-error *ngIf="createForm.controls['message'].errors?.required">this field is required
+                </mat-error>
               </div>
               <div class="card-footer">
                 <!-- [src]="currentUser.image" -->
                 <mat-icon color="accent">tag_faces</mat-icon>
                 <span class="space"></span>
-                <button mat-raised-button color="accent" type="submit">
+                <button [disabled]="createForm.invalid" mat-raised-button color="accent" type="submit">
                   <mat-icon>add_comment</mat-icon>
                 </button>
               </div>
@@ -68,17 +74,16 @@
         </div>
 
         <!-- *appShowAuthed="false" -->
-        <div>
+        <div *appShowAuthed="false">
           <a [routerLink]="['/login']">Sign in</a> or <a [routerLink]="['/register']">sign up</a> to add comments on
           this article.
         </div>
-        <app-comment  *ngFor="let comment of comments"
-        [comment]="comment"></app-comment>
-        <!-- <app-article-comment
-            *ngFor="let comment of comments"
-            [comment]="comment"
-            (deleteComment)="onDeleteComment(comment)">
-          </app-article-comment> -->
+        <app-spinner *ngIf="isLoading"  ></app-spinner>
+        <app-comment   *ngFor="let comment of comments"
+        [comment]="comment"  (deleteComment)="onDeleteComment(comment)"></app-comment>
+        <button (click)="load()" *ngIf="totalItem>comments.length"  mat-raised-button color="accent" type="submit">
+          loading more .... 
+          </button>
 
       </div>
     </div>

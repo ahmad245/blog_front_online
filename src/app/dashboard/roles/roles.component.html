@@ -7,7 +7,7 @@
   
   <mat-form-field>
     <mat-select placeholder="Select me" name="roles" formControlName="roles">
-      <mat-option [value]=item.id *ngFor="let item of role">{{item.name}}</mat-option>
+      <mat-option [value]=item *ngFor="let item of role">{{item}}</mat-option>
     </mat-select>
     <mat-hint align="end">Here's the dropdown arrow ^</mat-hint>
     <mat-error  >this field is required</mat-error>

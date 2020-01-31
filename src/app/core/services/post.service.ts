@@ -1,9 +1,9 @@
-import {HttpClient, HttpHeaders, HttpParams,HttpBackend }from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams,HttpBackend, HttpRequest }from '@angular/common/http';
 import { IPost } from 'src/app/core';
 import { map } from 'rxjs/operators';
 import { Observable, BehaviorSubject, Subject } from 'rxjs';
 
-import { Injectable } from '@angular/core';
+import { Injectable, Pipe } from '@angular/core';
 
 
 
@@ -35,6 +35,10 @@ export class PostService {
     
     return this.http2.get(this.rootUrl+`/api/posts?pagination=${pagination}&itemsPerPage=${itemsPerPage}&_page=${page}&${search}`);
   }
+  getAllPostByUser(id,pagination?, itemsPerPage?,page?,search?) {
+    console.log(pagination,itemsPerPage,page,search);
+    return this.http2.get(this.rootUrl+`/api/users/${id}/posts?pagination=${pagination}&itemsPerPage=${itemsPerPage}&_page=${page}&${search}`);
+  }
   getById(id){
     return this.http2.get(this.rootUrl+`/api/posts/${id}`);
   }
@@ -42,10 +46,35 @@ export class PostService {
   getByType(id, pagination?, itemsPerPage?,page?) {
    return this.http2.get(this.rootUrl+`/api/blog_types/${id}/posts?pagination=${pagination}&itemsPerPage=${itemsPerPage}&_page=${page}`);
   }
+
+
+
+  getFormUrlEncoded(toConvert) {
+		const formBody = [];
+		for (const property in toConvert) {
+			const encodedKey = encodeURIComponent(property);
+			const encodedValue = encodeURIComponent(toConvert[property]);
+			formBody.push(encodedKey + '=' + encodedValue);
+		}
+		return formBody.join('&');
+	}
+
+
+
+
+  uplaodImg(fileData){
+   
+    const formData = new FormData();
+    formData.append('file',fileData)
+    let r={file:fileData}
+    let headers = new Headers();
+headers.append('Content-Type', 'multipart/form-data;boundary='+Math.random());
+headers.append('Accept', 'application/json');
+    return this.http2.post(this.rootUrl+'/api/images',formData,headers)}
   
   post(title, slug, content, publish, images, blogType) {
    
-   return this.http.post(this.rootUrl+'/api/posts',{title,slug,content,publish,images,blogType:`api/blog_types/${blogType}`});
+   return this.http.post(this.rootUrl+'/api/posts',{title,slug,content,publish,images:`api/images/${images}`,blogType:`api/blog_types/${blogType}`});
   }
 
   put(id,title, slug, content, publish, images, blogType) {

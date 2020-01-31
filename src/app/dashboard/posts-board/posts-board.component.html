@@ -11,7 +11,8 @@
      
   </div>
   
-  <mat-spinner *ngIf="isLoading" ></mat-spinner>
+  <!-- <mat-spinner *ngIf="isLoading" ></mat-spinner> -->
+  <app-spinner *ngIf="isLoading"></app-spinner>
   
   <mat-table [dataSource]="listData" matSort class="mat-elevation-z8">
     <!--- Note that these columns can be defined in any order.

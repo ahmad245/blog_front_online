@@ -1,3 +1,4 @@
+import { UserService } from 'src/app/core/services/user.service';
 import { IPostConfig } from './../../core/models/postConfig';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
@@ -12,9 +13,11 @@ export class HomeComponent implements OnInit {
   config:IPostConfig={};
   createForm;
   isSubmitting=false;
+  isAuthenticated=false;
   constructor(
     private route:ActivatedRoute,
-    public fb: FormBuilder
+    public fb: FormBuilder,
+    private uS:UserService
   ) { 
     this.createForm=this.fb.group({
  
@@ -28,5 +31,4 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     
   }
-
 }

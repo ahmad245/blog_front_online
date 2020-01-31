@@ -3,6 +3,8 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { UserService } from 'src/app/core/services/user.service';
+import { Subscription } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -17,11 +19,13 @@ export class LoginComponent implements OnInit {
   // errors: Errors = {errors: {}};
   isSubmitting = false;
   authForm: FormGroup;
+  subscription = new Subscription();
   constructor(
     @Inject(MAT_DIALOG_DATA) public data,public dialog:MatDialogRef<LoginComponent>,
     private route: ActivatedRoute,
     private router: Router,
     private uS:UserService,
+    public toastr:ToastrService,
     public dialogRef:MatDialogRef<LoginComponent>,
     
     public fb: FormBuilder
@@ -54,16 +58,23 @@ export class LoginComponent implements OnInit {
         password:this.createForm.value.password,
        
     }
-    this.uS.attemptAuth(this.data.type,user).subscribe((data)=>{
-      console.log(data);
-      if(data){
-        this.onClose();
-
-       
-      }
+   this.subscription.add(
+      this.uS.attemptAuth(this.data.type,user).subscribe(
+        res => {
+              
+          this.toastr.success('Votre matière a été delete avec succès.', 'Success');
+          this.onClose();
+        },
+        err => {
+         
+          this.toastr.error(err.message, 'Error occured');
     
-      
-    })
+        })
+      )
+   ;
+  }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
  
 }

@@ -11,7 +11,7 @@ export class PostPreviewComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log(this.post);
+ 
     console.log('post prev');
     
   }

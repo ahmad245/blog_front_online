@@ -1,8 +1,7 @@
 
 import { Injectable } from '@angular/core';
 
-import { QueryRef } from 'apollo-angular';
-import { BehaviorSubject, ReplaySubject, Observable } from 'rxjs';
+import { BehaviorSubject, ReplaySubject, Observable, Subject, observable } from 'rxjs';
 import { IUser } from '..';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 import { JwtService } from './jwt.service';
@@ -16,27 +15,29 @@ export class UserService {
   private currentUserSubject = new BehaviorSubject<IUser>({} as IUser);
   public currentUser = this.currentUserSubject.asObservable().pipe(distinctUntilChanged());
 
-  private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
+  public isAuthenticatedSubject = new ReplaySubject<boolean>(1);
   public isAuthenticated = this.isAuthenticatedSubject.asObservable();
 
-  private isAdmindSubject = new BehaviorSubject<boolean>(false);
+  private isAdmindSubject = new ReplaySubject<boolean>(1);
   public isAdmin = this.isAuthenticatedSubject.asObservable();
 
 
-  private isSuperAdmindSubject = new BehaviorSubject<boolean>(false);
+  private isSuperAdmindSubject = new ReplaySubject<boolean>(1);
   public isSuperAdmin = this.isSuperAdmindSubject.asObservable();
 
-  private isWriterdSubject = new BehaviorSubject<boolean>(false);
+  private isWriterdSubject = new ReplaySubject<boolean>(1);
   public isWriter = this.isWriterdSubject.asObservable();
 
-  private isUpdaterSubject = new BehaviorSubject<boolean>(false);
+  private isUpdaterSubject = new ReplaySubject<boolean>(1);
   public isUpdater = this.isUpdaterSubject.asObservable();
 
-  private isDeleterSubject = new BehaviorSubject<boolean>(false);
+  private isDeleterSubject = new ReplaySubject<boolean>(1);
   public isDeleter = this.isDeleterSubject.asObservable();
 
   readonly rootUrl="http://localhost:8080";
   private http2;
+  public users=new  Subject<boolean>();
+  allUser;
   constructor(
  
     private jwtService: JwtService,
@@ -46,15 +47,16 @@ export class UserService {
   ) { 
     this.http2=new HttpClient(handler);
   }
-  getUsersByFragment() {
-    // return this.gQLService.query(this.userQuerie.allUsersByFragment);
-  }
+
   
-  getAll(page?, pageSize?){
-    // return this.gQLService.query(this.userQuerie.allUser(['users{name roles{name id} id email isAdmin blogs{title}}','total']),{ page, pageSize})
-    // .valueChanges.pipe(map(response => {
-    //   return response
-    // }))
+  getAll(pagination?, itemsPerPage?,page?,search?){
+    return this.http.get(this.rootUrl+`/api/users?pagination=${pagination}&itemsPerPage=${itemsPerPage}&_page=${page}&${search}`)
+    .subscribe((data)=>{
+     
+      
+       this.allUser=data;
+       this.users.next(true);
+    })
   }
   getById(id) {
     // return this.gQLService.query(this.userQuerie.userById(['name']), { id })
@@ -65,43 +67,26 @@ export class UserService {
   login(email, password) {
     return this.http2.post(this.rootUrl+`/api/login_check`,{username:email ,password})
   }
-  signUp(firstName, lastName,email ,password,confirmPassword) {
-     return this.http2.post(this.rootUrl+`/api/users`,{firstName, lastName,email ,password,confirmPassword})
+  signUp(firstName, lastName,email ,password,confirmPassword,roles?):Observable<any> {
+    if(roles) return this.http2.post(this.rootUrl+`/api/users`,{firstName, lastName,email ,password,confirmPassword,roles})
+    else return this.http2.post(this.rootUrl+`/api/users`,{firstName, lastName,email ,password,confirmPassword})
   }
   confirmToken(confirmationToken){
     return this.http2.post(this.rootUrl+'/api/users/confirm',{confirmationToken:confirmationToken});
   }
 
-  updateRoleUser(id,role,isAdmin){
-    // return this.gQLService.mutate(this.userMutation.updateRoleUser,{id,role,isAdmin},
-    //   (store,{data:{updateRoleUser}}) => {       
-    //     const data: any = store.readQuery({
-    //       query: this.userQuerie.allUser(['users{name roles{name id} id email blogs{title}}','total'])
-    //     });
-       
-    //    data.users.users.push(updateRoleUser);
-
-    //    store.writeQuery({ query: this.userQuerie.allUser(['users{name roles{name id} id email blogs{title}}','total']), data })
-    //   }
-    //   )
+  updateRoleUser(id,role){
+    return this.http.put(this.rootUrl+`/api/users/${id}/roles`,{roles:[role]});
   }
-  delete(id,page?, pageSize?){
-    // return this.gQLService.mutate(this.userMutation.deleteUser,{id},
-    //   (store,{data:{deleteUser}}) => {       
-    //     const data: any = store.readQuery({
-    //       query: this.userQuerie.allUser(['users{name roles{name id} id email blogs{title}}','total']),
-    //       variables:{page,pageSize}
-         
-          
-    //     });
-    //     console.log(  deleteUser);
-    //     data.users.users= data.users.users.filter(a=>a.id !== deleteUser.id);
-    //     data.users.total--;
-    //   console.log( data.users);
-      
-
-    //     store.writeQuery({ query: this.userQuerie.allUser(['users{name roles{name id} id email blogs{title}}','total']),variables:{page,pageSize}, data })
-    //   });
+  
+  getRoles(){
+    return ['ROLE_COMMENTATOR','ROLE_WRITER','ROLE_EDITOR','ROLE_ADMIN','ROLE_SUPERADMIN']
+  }
+  delete(id){
+    return this.http.delete(this.rootUrl+"/api/users/"+id);
+  }
+  put(id,user){
+    return this.http.put(this.rootUrl+`/api/users/${id}`,{firstName:user.firstName,lastName:user.lastName,email:user.email});
   }
   /////////////////////////////////////////////////////////////////////
 
@@ -115,6 +100,9 @@ export class UserService {
       userInf=this.jwtService.getTokenId();
       this.getMe(userInf).subscribe(
         response => {  
+        
+          console.log(response);
+          
           this.setAuth(response)
          // console.log(response);
          },
@@ -144,13 +132,18 @@ export class UserService {
       this.jwtService.saveToken(user.token);
       this.jwtService.saveTokenId(user.id);
       userInf=this.jwtService.getUserPayload();
+       this.currentUserSubject.next(userInf);
     }
     else if(user && this.jwtService.getUserPayload()){
       userInf=this.jwtService.getUserPayload();
+       this.currentUserSubject.next(user);
     }
     // Set current user data into observable
-    this.currentUserSubject.next(userInf);
+    
     // Set isAuthenticated to true
+    else{
+      this.currentUserSubject.next(user);
+    }
     this.isAuthenticatedSubject.next(true);
 
     if (userInf.roles[0]==="ROLE_ADMIN" ||userInf.roles[0]==="ROLE_SUPERADMIN" ) {
@@ -179,6 +172,7 @@ export class UserService {
   purgeAuth() {
     // Remove JWT from localstorage
     this.jwtService.destroyToken();
+    // this.jwtService.destroyTokenId();
     // Set current user to an empty object
     this.currentUserSubject.next({} as IUser);
     // Set auth status to false

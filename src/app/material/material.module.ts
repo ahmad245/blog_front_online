@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import * as Material from "@angular/material";
+import {DragDropModule} from '@angular/cdk/drag-drop'; 
 
 @NgModule({
   declarations: [],
@@ -33,6 +34,7 @@ import * as Material from "@angular/material";
     Material.MatBadgeModule,
     Material.MatProgressSpinnerModule,
     Material.MatTabsModule,
+    DragDropModule
  
     
   ],
@@ -64,6 +66,7 @@ import * as Material from "@angular/material";
     Material.MatBadgeModule,
     Material.MatProgressSpinnerModule,
     Material.MatTabsModule,
+    DragDropModule
   ]
 })
 export class MaterialModule { }

@@ -7,10 +7,7 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { IPostType } from 'src/app/core';
 import { Subscription } from 'rxjs';
-import { QuillModule } from 'ngx-quill';
-interface post {
-  [key: string]: any
-}
+
 @Component({
   selector: 'app-editor',
   templateUrl: './editor.component.html',
@@ -72,27 +69,10 @@ export class EditorComponent implements OnInit, OnDestroy {
             
               blogType: this.post.blogType.id ,
             })
-      
+    
     });
   }
-    // if ( this.postId ) {
-    //   this.pS.getById( this.postId ).subscribe((response) => {
-    //     console.log(response.data.blog);
-
-    //     this.createForm.patchValue({
-    //       _id: response.data.blog.id,
-    //       title: response.data.blog.title,
-    //       slug: response.data.blog.slug,
-    //       description: response.data.blog.description,
-    //       text: response.data.blog.text,
-    //       isPublish: response.data.blog.isPublish || false,
-    //       auther: response.data.blog.auther,
-    //       imgUrl: response.data.blog.imgUrl || '',
-    //       tags: response.data.blog.tags || '',
-    //       blogType: response.data.blog.blogType.id,
-    //     })
-    //   })
-    // }
+    
 
 
     this.subscription.add(
@@ -100,13 +80,7 @@ export class EditorComponent implements OnInit, OnDestroy {
         this.postTypes = response['hydra:member'];
       })
     );
-    // this.subscription.add(
-    //   this.uS.currentUser.subscribe(user => {
-    //     this.userId = user.id
-
-
-    //   })
-    // );
+  
   }
   fileProgress(fileInput: any) {
     this.fileData = <File>fileInput.target.files[0];
@@ -129,38 +103,45 @@ export class EditorComponent implements OnInit, OnDestroy {
  
   onSubmit() {
 
-    let post;
-    post = {
-      title: this.createForm.value.title,
-      slug: this.createForm.value.slug,
-      content: this.createForm.value.content,
-      publish: this.createForm.value.publish,
-      images: this.createForm.value.isPublish,
-      blogType: this.createForm.value.blogType,
-      }
+    
+    this.pS.uplaodImg( this.fileData).subscribe((data)=>{
+      console.log(data);
+      
+    })
+
    
-    console.log(this.createForm.value);
-     if( this.postId ){
-      console.log('update');
-        this.subscription.add(
-          this.pS.put(this.postId, post.title, post.slug, post.content, post.publish, post.images, post.blogType)
-            .subscribe(data => {
+    // let post;
+    // post = {
+    //   title: this.createForm.value.title,
+    //   slug: this.createForm.value.slug,
+    //   content: this.createForm.value.content,
+    //   publish: this.createForm.value.publish,
+    //   images: this.createForm.value.isPublish,
+    //   blogType: this.createForm.value.blogType,
+    //   }
+   
+    // console.log(this.createForm.value);
+    //  if( this.postId ){
+    //   console.log('update');
+    //     this.subscription.add(
+    //       this.pS.put(this.postId, post.title, post.slug, post.content, post.publish, post.images, post.blogType)
+    //         .subscribe(data => {
               
-            })
-        )
-     }
-     else{
-       console.log('add');
+    //         })
+    //     )
+    //  }
+    //  else{
+    //    console.log('add');
        
-      this.subscription.add(    
-        this.pS.post(post.title, post.slug, post.content, post.publish, post.images, +post.blogType)
-          .subscribe(data => {
-            console.log(data);
+    //   this.subscription.add(    
+    //     this.pS.post(post.title, post.slug, post.content, post.publish, post.images, +post.blogType)
+    //       .subscribe(data => {
+    //         console.log(data);
             
   
-          })
-      )
-     }
+    //       })
+    //   )
+    //  }
     
   }
 
