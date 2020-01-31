@@ -118,7 +118,7 @@ export class UserService {
       );
 
     } else {
-
+           this.isAuthenticatedSubject.next(false);
       //  Remove any potential remnants of previous auth states
      // this.purgeAuth();
     }
@@ -172,7 +172,7 @@ export class UserService {
   purgeAuth() {
     // Remove JWT from localstorage
     this.jwtService.destroyToken();
-    // this.jwtService.destroyTokenId();
+     this.jwtService.destroyTokenId();
     // Set current user to an empty object
     this.currentUserSubject.next({} as IUser);
     // Set auth status to false

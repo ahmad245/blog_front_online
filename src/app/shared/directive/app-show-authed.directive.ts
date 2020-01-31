@@ -14,9 +14,6 @@ export class AppShowAuthedDirective implements OnInit {
   ) { }
   ngOnInit(): void {
   this.uS.isAuthenticated.subscribe((isAuthenticated)=>{
-     console.log(isAuthenticated);
-     console.log('isAuthenticated');
-     
     if(isAuthenticated && this.condition || !isAuthenticated && !this.condition)
     {
       this.viewContainer.createEmbeddedView(this.templateRef)

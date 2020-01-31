@@ -34,7 +34,7 @@ export class AppComponent implements OnInit {
     //   console.log(data['hydra:member']);
       
     // })
-    this.uS.isAuthenticatedSubject.next(false);
+   // this.uS.isAuthenticatedSubject.next(false);
     
    this.uS.populate();
   }
