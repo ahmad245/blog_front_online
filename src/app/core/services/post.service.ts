@@ -70,11 +70,13 @@ export class PostService {
     let headers = new Headers();
 headers.append('Content-Type', 'multipart/form-data;boundary='+Math.random());
 headers.append('Accept', 'application/json');
-    return this.http2.post(this.rootUrl+'/api/images',formData,headers)}
+    return this.http2.post(this.rootUrl+'/api/images',formData,headers,
+    {reportProgress: true,
+          observe: 'events'  })}
   
   post(title, slug, content, publish, images, blogType) {
    
-   return this.http.post(this.rootUrl+'/api/posts',{title,slug,content,publish,images:`api/images/${images}`,blogType:`api/blog_types/${blogType}`});
+   return this.http.post(this.rootUrl+'/api/posts',{title,slug,content,publish,images:[`api/images/${images.id}`],blogType:`api/blog_types/${blogType}`});
   }
 
   put(id,title, slug, content, publish, images, blogType) {

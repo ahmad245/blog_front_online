@@ -1,11 +1,14 @@
 .viewer-nav {
-  position: sticky;
+  // position: sticky;
   // top: 250px;
 
   &__content {
-    margin: 25px;
-    width: 240px;
-    max-height: 75vh;
+    margin-top: 25px;
+    margin-right: 25px;
+    
+    // width: 240px;
+    height: 100%;
+    // min-height: 100vh;
     overflow: auto;
     background: #333;
   }

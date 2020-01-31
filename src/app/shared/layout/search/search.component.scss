@@ -1,0 +1,19 @@
+.form{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    fieldset{
+        flex-grow: 1 !important;
+        display: flex;
+        .search{
+            flex-grow: 1 !important;
+            display: flex;
+        }
+        mat-form-field {
+           flex-grow: 1;
+        }
+    }
+    .search-btn{
+        margin-left: .5rem;
+    }
+}

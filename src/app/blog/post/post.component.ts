@@ -75,7 +75,8 @@ export class PostComponent implements OnInit {
    this.subscription.add(
       this.route.data.subscribe((data)=>{
       this.post=data.post;
-     
+        console.log(this.post);
+        
       
     })
    );

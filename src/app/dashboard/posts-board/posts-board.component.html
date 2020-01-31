@@ -1,7 +1,7 @@
 <div class="search-div">
-    <button (click)="openDialog()" mat-raised-button>
-      <mat-icon>add</mat-icon>create
-    </button>
+    <a  routerLink="/editor" mat-raised-button>
+      <mat-icon>add</mat-icon>create Post
+    </a>
     <mat-form-field class="search-form-field">
         <input matInput (keyup)="applyFilter()" [(ngModel)]="value" placeholder="Filter">
         <button mat-button   *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="clear()">

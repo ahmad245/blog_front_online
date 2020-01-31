@@ -31,7 +31,7 @@ export class PostListComponent implements OnInit, OnDestroy {
   posts: IPost[] = [];
   disable = true;
   subscription = new Subscription();
-
+  
   ngOnInit() {
     this.subscription.add(
     this.pS.search.pipe(

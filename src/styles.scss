@@ -10,7 +10,9 @@
 
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins/_breakpoints.scss";
 @import "~bootstrap/scss/mixins";
+
 // Import Bootstrap Reboot
 @import "~bootstrap/scss/reboot";
 
@@ -19,8 +21,9 @@
 @import "~bootstrap/scss/utilities"; // add css utilities
 
 @import "./sass/abstracts/reset";
+@import "./sass/responsive/responsive";
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; font-size: 100%;}
 app-spinner{
     position: fixed;
     top: 0%;

@@ -24,6 +24,10 @@
   <div class="container page">
 
     <div class="row article-content">
+      <div *ngIf="post && post.images[0]?.url"  class="col-xs-12 col-md-8 offset-md-2 my-2 article-content__text">
+        <!-- <p> {{post.description}} </p> -->
+          <img [src]="'http://localhost:8080'+post.images[0].url" alt="" srcset="" style="width: 100%;" class="img-fluid" >
+      </div>
       <div class="col-xs-12 col-md-8 offset-md-2 my-2 article-content__text">
         <!-- <p> {{post.description}} </p> -->
         <quill-view-html  [content]="post.content" theme="snow"></quill-view-html>

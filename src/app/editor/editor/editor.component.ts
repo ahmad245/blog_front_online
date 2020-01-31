@@ -4,9 +4,10 @@ import { UserService } from './../../core/services/user.service';
 import { PostService } from './../../core/services/post.service';
 import { PostTypeService } from './../../core/services/post-type.service';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Pipe } from '@angular/core';
 import { IPostType } from 'src/app/core';
 import { Subscription } from 'rxjs';
+import { switchMap, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-editor',
@@ -22,7 +23,7 @@ export class EditorComponent implements OnInit, OnDestroy {
   postTypes: IPostType[] = [];
   userId;
   postId;
-  post:IPost;
+  post: IPost;
 
 
   subscription = new Subscription();
@@ -33,7 +34,7 @@ export class EditorComponent implements OnInit, OnDestroy {
     public pS: PostService,
     private uS: UserService
   ) {
-   
+
     this.createForm = this.fb.group({
       _id: [''],
       title: ['', [Validators.required, Validators.minLength(1)]],
@@ -49,30 +50,30 @@ export class EditorComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    
+
     this.postId = this.route.snapshot.paramMap.get('id');
-   
-    
-    if ( this.postId ) {
-    this.route.data.subscribe((data)=>{
-      this.post=data.post;
-      console.log(this.post);
-      
-      this.createForm.patchValue({
-              _id: this.post.id,
-              title: this.post.title,
-              slug: this.post.slug,
-              content: this.post.content,
-              publish: this.post.publish || false,
-             
-              images: this.post.images || '',
-            
-              blogType: this.post.blogType.id ,
-            })
-    
-    });
-  }
-    
+
+
+    if (this.postId) {
+      this.route.data.subscribe((data) => {
+        this.post = data.post;
+        console.log(this.post);
+
+        this.createForm.patchValue({
+          _id: this.post.id,
+          title: this.post.title,
+          slug: this.post.slug,
+          content: this.post.content,
+          publish: this.post.publish || false,
+
+          images: this.post.images || '',
+
+          blogType: this.post.blogType.id,
+        })
+
+      });
+    }
+
 
 
     this.subscription.add(
@@ -80,7 +81,7 @@ export class EditorComponent implements OnInit, OnDestroy {
         this.postTypes = response['hydra:member'];
       })
     );
-  
+
   }
   fileProgress(fileInput: any) {
     this.fileData = <File>fileInput.target.files[0];
@@ -100,49 +101,72 @@ export class EditorComponent implements OnInit, OnDestroy {
       this.previewUrl = reader.result;
     }
   }
- 
+
   onSubmit() {
 
-    
-    this.pS.uplaodImg( this.fileData).subscribe((data)=>{
-      console.log(data);
-      
-    })
+    let post;
+    post = {
+      title: this.createForm.value.title,
+      slug: this.createForm.value.slug,
+      content: this.createForm.value.content,
+      publish: this.createForm.value.publish,
+      images: this.fileData || null,
+      blogType: this.createForm.value.blogType,
+    }
 
-   
-    // let post;
-    // post = {
-    //   title: this.createForm.value.title,
-    //   slug: this.createForm.value.slug,
-    //   content: this.createForm.value.content,
-    //   publish: this.createForm.value.publish,
-    //   images: this.createForm.value.isPublish,
-    //   blogType: this.createForm.value.blogType,
-    //   }
-   
-    // console.log(this.createForm.value);
-    //  if( this.postId ){
-    //   console.log('update');
-    //     this.subscription.add(
-    //       this.pS.put(this.postId, post.title, post.slug, post.content, post.publish, post.images, post.blogType)
-    //         .subscribe(data => {
-              
-    //         })
-    //     )
-    //  }
-    //  else{
-    //    console.log('add');
-       
-    //   this.subscription.add(    
-    //     this.pS.post(post.title, post.slug, post.content, post.publish, post.images, +post.blogType)
-    //       .subscribe(data => {
-    //         console.log(data);
-            
-  
-    //       })
-    //   )
-    //  }
-    
+
+    if (this.postId) {
+      this.subscription.add(
+        this.pS.put(this.postId, post.title, post.slug, post.content, post.publish, post.images, post.blogType)
+          .subscribe(data => {
+
+          })
+      )
+    }
+    else {
+     
+      if (this.fileData) {
+        this.subscription.add(this.pS.uplaodImg(this.fileData).pipe(switchMap((value:any) => {
+          if (value)
+            return this.pS.post(post.title, post.slug, post.content, post.publish, value, +post.blogType)
+
+        })
+        )
+          .subscribe(
+            res => {
+             console.log('suscss');
+             
+            },
+            err => {
+                  console.log(err);
+                  
+            }
+          )
+        )
+
+      }
+      else {
+        this.subscription.add(this.pS.post(post.title, post.slug, post.content, post.publish, post.images, +post.blogType)
+          .subscribe(
+            res => {
+
+            },
+            err => {
+
+            }
+          )
+        )
+
+      }
+
+
+
+    }
+
+
+
+
+
   }
 
 
