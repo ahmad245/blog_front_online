@@ -1,3 +1,4 @@
+import { PostService } from 'src/app/core/services/post.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { IPost } from 'src/app/core';
 
@@ -8,12 +9,18 @@ import { IPost } from 'src/app/core';
 })
 export class PostPreviewComponent implements OnInit {
  @Input() post:IPost;
-  constructor() { }
+  constructor(private pS:PostService) { }
 
   ngOnInit() {
+
  
-    console.log('post prev');
     
+  }
+  fetchBy(tag){
+  
+    this.pS.tag.next(tag);
+    
+
   }
 
 }

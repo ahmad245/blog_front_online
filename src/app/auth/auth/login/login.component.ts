@@ -5,6 +5,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { UserService } from 'src/app/core/services/user.service';
 import { Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { DialogService } from 'src/app/core/services/dialog.service';
 
 @Component({
   selector: 'app-login',
@@ -27,6 +28,7 @@ export class LoginComponent implements OnInit {
     private uS:UserService,
     public toastr:ToastrService,
     public dialogRef:MatDialogRef<LoginComponent>,
+    public dialogService: DialogService,
     
     public fb: FormBuilder
   ) { 
@@ -52,6 +54,7 @@ export class LoginComponent implements OnInit {
     this.createForm.reset();
    }
   onSubmit(){
+    this.isSubmitting = true;
     let user={
       
         email:this.createForm.value.email,
@@ -61,17 +64,24 @@ export class LoginComponent implements OnInit {
    this.subscription.add(
       this.uS.attemptAuth(this.data.type,user).subscribe(
         res => {
-              
+          this.isSubmitting = false;
           this.toastr.success('Votre matière a été delete avec succès.', 'Success');
+          this.router.navigateByUrl('/');
           this.onClose();
         },
         err => {
-         
+          this.isSubmitting = false;
           this.toastr.error(err.message, 'Error occured');
     
         })
       )
    ;
+  }
+
+  openConfirm(){
+    this.onClose();
+      
+    this.dialogService.openConfirmDialog("please type confirm code ");
   }
   ngOnDestroy() {
     this.subscription.unsubscribe();

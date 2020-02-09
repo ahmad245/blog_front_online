@@ -1,84 +1,103 @@
-<div class="search-div">
-  <a  routerLink="/dashboard/createUser" mat-raised-button>
-    <mat-icon>add</mat-icon>create user
-  </a>
-  <mat-form-field class="search-form-field">
-      <input matInput (keyup)="applyFilter()" [(ngModel)]="value" placeholder="Filter">
-      <button mat-button   *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="clear()">
-          <mat-icon>close</mat-icon>
-        </button>
-    </mat-form-field>
-   
-</div>
+<div class="container post-board">
+  <div class="row">
+    <div class="col-md-6 offset-md-3 col-xs-12">
 
-<!-- <mat-spinner *ngIf="isLoading" ></mat-spinner> -->
-<app-spinner *ngIf="isLoading"></app-spinner>
+      <h1 class="text-xs-center">Dashboard Users</h1>
+    </div>
+  </div>
 
-<mat-table [dataSource]="listData" matSort class="mat-elevation-z8">
-  <!--- Note that these columns can be defined in any order.
+  <div class="row">
+    <div class="col-10 col-sm-12 col-md-12 col lg-12">
+      <div class="search-div">
+        <a routerLink="/dashboard/createUser" mat-raised-button>
+          <mat-icon>add</mat-icon>create user
+        </a>
+        <mat-form-field class="search-form-field">
+          <input matInput (keyup)="applyFilter()" [(ngModel)]="value" placeholder="Filter">
+          <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="clear()">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+
+      </div>
+    </div>
+  </div>
+  <!-- <mat-spinner *ngIf="isLoading" ></mat-spinner> -->
+  
+  <div class="row">
+    <div class="col-10 col-sm-12 col-md-12 col lg-12">
+  <mat-table [dataSource]="listData" matSort class="mat-elevation-z8">
+    <!--- Note that these columns can be defined in any order.
         The actual rendered columns are set as a property on the row definition" -->
-  <!-- Name Column -->
-  <ng-container matColumnDef="firstName">
-    <mat-header-cell *matHeaderCellDef mat-sort-header> fistName </mat-header-cell>>
-    <mat-cell *matCellDef="let element"> {{element.firstName}} </mat-cell>>
-  </ng-container>
-
- 
-  <ng-container   matColumnDef="lastName">
-    <mat-header-cell *matHeaderCellDef mat-sort-header> lastName </mat-header-cell>>
-    <mat-cell *matCellDef="let element"> {{ element.lastName}} </mat-cell>>
-
-  </ng-container>
-
-  <ng-container   matColumnDef="email">
-    <mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>>
-    <mat-cell *matCellDef="let element"> {{ element.email}} </mat-cell>>
-
-  </ng-container>
- 
-  <ng-container   matColumnDef="roles">
-    <mat-header-cell *matHeaderCellDef mat-sort-header> Roles </mat-header-cell>>
-    <mat-cell *matCellDef="let element"> {{ element.roles[0]}} </mat-cell>>
-
-  </ng-container>
- 
-
- 
- 
-  <ng-container   matColumnDef="loading">
-     <mat-footer-cell *matFooterCellDef>
-       loading...
-     </mat-footer-cell>
+    <!-- Name Column -->
+    <ng-container matColumnDef="firstName">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> fistName </mat-header-cell>>
+      <mat-cell *matCellDef="let element"> {{element.firstName}} </mat-cell>>
     </ng-container>
 
-    <ng-container   matColumnDef="nodata">
-        <mat-footer-cell *matFooterCellDef>
-          No Data...
-        </mat-footer-cell>
-       </ng-container>
- 
+
+    <ng-container matColumnDef="lastName">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> lastName </mat-header-cell>>
+      <mat-cell *matCellDef="let element"> {{ element.lastName}} </mat-cell>>
+
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>>
+      <mat-cell *matCellDef="let element"> {{ element.email}} </mat-cell>>
+
+    </ng-container>
+
+    <ng-container matColumnDef="roles">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Roles </mat-header-cell>>
+      <mat-cell  *matCellDef="let element"> {{ element.roles ? element.roles[0] : ''}} </mat-cell>>
+
+    </ng-container>
+
+
+
+
+    <ng-container matColumnDef="loading">
+      <mat-footer-cell *matFooterCellDef>
+        loading...
+      </mat-footer-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="nodata">
+      <mat-footer-cell *matFooterCellDef>
+        No Data...
+      </mat-footer-cell>
+    </ng-container>
+
     <ng-container matColumnDef="actions">
       <mat-header-cell *matHeaderCellDef></mat-header-cell>
       <mat-cell *matCellDef="let row">
-        <a  mat-icon-button (click)="update(row)"><mat-icon>launch</mat-icon> </a>
-        <button  mat-icon-button color="warn" (click)="delete(row)" ><mat-icon>delete_outline</mat-icon> </button>
-        <a  mat-icon-button  ><mat-icon>info</mat-icon> </a>
-        </mat-cell>
+        <a mat-icon-button (click)="update(row)">
+          <mat-icon>launch</mat-icon>
+        </a>
+        <button mat-icon-button color="warn" (click)="delete(row)">
+          <mat-icon>delete_outline</mat-icon>
+        </button>
+        <a routerLink="/profile/username" [queryParams]="{userId:row.id}" mat-icon-button>
+          <mat-icon>info</mat-icon>
+        </a>
+      </mat-cell>
     </ng-container>
 
-  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 
-  <mat-footer-row [ngClass]="{'hiden':listData!=null}" *matFooterRowDef="['loading']"></mat-footer-row>
-  <mat-footer-row [ngClass]="{'hiden':!(listData!=null && listData.data.length==0)}" *matFooterRowDef="['nodata']"></mat-footer-row>
+    <mat-footer-row [ngClass]="{'hiden':listData!=null}" *matFooterRowDef="['loading']"></mat-footer-row>
+    <mat-footer-row [ngClass]="{'hiden':!(listData!=null && listData.data.length==0)}" *matFooterRowDef="['nodata']">
+    </mat-footer-row>
+
+
+  </mat-table>
+  <mat-paginator [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" [length]="totalItem" showFirstLastButtons
+    (page)="onChangePage($event)">
+  </mat-paginator>
+    </div>
+  </div>
   
-
-</mat-table>
-<mat-paginator 
- 
-  [pageSize]="pageSize"
-  [pageSizeOptions]="pageSizeOptions" 
-  [length]="totalItem" showFirstLastButtons 
-  (page)="onChangePage($event)"
-  >
-</mat-paginator>
+</div>
+<app-spinner *ngIf="isLoading"></app-spinner>

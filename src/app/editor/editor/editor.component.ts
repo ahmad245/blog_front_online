@@ -1,5 +1,6 @@
+import { ITags } from './../../core/models/tag';
 import { IPost } from './../../core/models/post';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from './../../core/services/user.service';
 import { PostService } from './../../core/services/post.service';
 import { PostTypeService } from './../../core/services/post-type.service';
@@ -8,6 +9,7 @@ import { Component, OnInit, OnDestroy, Pipe } from '@angular/core';
 import { IPostType } from 'src/app/core';
 import { Subscription } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-editor',
@@ -25,14 +27,16 @@ export class EditorComponent implements OnInit, OnDestroy {
   postId;
   post: IPost;
 
-
+  isSubmitting = false;
   subscription = new Subscription();
   constructor(
     public route: ActivatedRoute,
     public fb: FormBuilder,
     public pTS: PostTypeService,
     public pS: PostService,
-    private uS: UserService
+    private uS: UserService,
+    private toastr: ToastrService,
+    private router: Router,
   ) {
 
     this.createForm = this.fb.group({
@@ -41,9 +45,11 @@ export class EditorComponent implements OnInit, OnDestroy {
       slug: [''],
       content: ['', [Validators.required, Validators.minLength(1)]],
       publish: [],
-      author: ['', [Validators.required, Validators.minLength(1)]],
-      images: ['', [Validators.required, Validators.minLength(1)]],
+      author: [''],
+      images: [''],
       blogType: ['', [Validators.required]],
+      description: ['', [Validators.required]],
+      tags: ['', [Validators.required]],
 
     })
   }
@@ -55,10 +61,16 @@ export class EditorComponent implements OnInit, OnDestroy {
 
 
     if (this.postId) {
+      
       this.route.data.subscribe((data) => {
         this.post = data.post;
-        console.log(this.post);
-
+       
+        
+        let tagsArray=this.post.tags.map(el=>el.name);
+     
+        
+      
+        
         this.createForm.patchValue({
           _id: this.post.id,
           title: this.post.title,
@@ -66,14 +78,15 @@ export class EditorComponent implements OnInit, OnDestroy {
           content: this.post.content,
           publish: this.post.publish || false,
 
-          images: this.post.images || '',
+          images:( this.post.images[0] ? this.post.images[0].url : null) ,
 
           blogType: this.post.blogType.id,
+          description: this.post.description,
+          tags: tagsArray.join(','),
         })
 
       });
     }
-
 
 
     this.subscription.add(
@@ -103,8 +116,9 @@ export class EditorComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-
+    this.isSubmitting = true;
     let post;
+    let tags=this.createForm.value.tags.split(',') || [''];
     post = {
       title: this.createForm.value.title,
       slug: this.createForm.value.slug,
@@ -112,47 +126,113 @@ export class EditorComponent implements OnInit, OnDestroy {
       publish: this.createForm.value.publish,
       images: this.fileData || null,
       blogType: this.createForm.value.blogType,
+      description:this.createForm.value.description,
+      tags:this.createForm.value.tags
     }
 
-
+    this.pS.addTag(post.tags.split(',')).then((tags:any[])=>{
+        let tag=tags.map(el=>{
+          return `api/tags/${el.id}`
+        });
+      
+        
+      
+      
     if (this.postId) {
-      this.subscription.add(
-        this.pS.put(this.postId, post.title, post.slug, post.content, post.publish, post.images, post.blogType)
-          .subscribe(data => {
 
-          })
-      )
-    }
-    else {
-     
       if (this.fileData) {
-        this.subscription.add(this.pS.uplaodImg(this.fileData).pipe(switchMap((value:any) => {
+        this.subscription.add(
+          this.pS.uplaodImg(this.fileData).pipe(switchMap((value: any) => {
+            if (value) return this.pS.put(this.postId, post.title, post.slug, post.content, post.publish, post.blogType,post.description,tag,value)
+
+            })
+          )
+            .subscribe(
+              res => {
+                this.isSubmitting = false;
+                this.toastr.success('Votre matière a été créer avec succès.', 'Success');
+                this.router.navigateByUrl('/');
+              },
+              errors => {
+         
+                this.isSubmitting = false;
+                this.toastr.error(errors.message, 'Error occured');
+                
+               
+              }
+            )
+        )
+      }
+
+      else {
+       
+    
+        
+        this.subscription.add(
+          this.pS.put(this.postId, post.title, post.slug, post.content, post.publish, post.blogType,post.description,tag)
+            .subscribe(
+              res => {
+              
+                this.isSubmitting = false;
+                this.toastr.success('Votre matière a été créer avec succès.', 'Success');
+                this.router.navigateByUrl('/');
+              },
+              errors => {
+            
+                
+                this.isSubmitting = false;
+                this.toastr.error(errors.message, 'Error occured');
+               
+
+              }
+            )
+        )
+      }
+
+    }
+
+
+    else {
+        
+      if (this.fileData) {
+      
+        this.subscription.add(this.pS.uplaodImg(this.fileData).pipe(switchMap((value: any) => {
           if (value)
-            return this.pS.post(post.title, post.slug, post.content, post.publish, value, +post.blogType)
+            return this.pS.post(post.title, post.slug, post.content, post.publish, +post.blogType,post.description,tag, value)
 
         })
         )
           .subscribe(
             res => {
-             console.log('suscss');
-             
+              this.isSubmitting = false;
+              this.toastr.success('Votre matière a été créer avec succès.', 'Success');
+              this.router.navigateByUrl('/');
             },
-            err => {
-                  console.log(err);
-                  
+            errors => {
+            
+              this.isSubmitting = false;
+              this.toastr.error(errors.message, 'Error occured');
+             
+
             }
           )
         )
 
       }
       else {
-        this.subscription.add(this.pS.post(post.title, post.slug, post.content, post.publish, post.images, +post.blogType)
+        this.subscription.add(this.pS.post(post.title, post.slug, post.content, post.publish, +post.blogType,post.description,tag)
           .subscribe(
             res => {
-
+            
+              
+              this.isSubmitting = false;
+              this.toastr.success('Votre matière a été créer avec succès.', 'Success');
+              this.router.navigateByUrl('/');
             },
-            err => {
-
+            errors => {
+          
+              this.isSubmitting = false;
+              this.toastr.error(errors.message, 'Error occured');
             }
           )
         )
@@ -163,11 +243,27 @@ export class EditorComponent implements OnInit, OnDestroy {
 
     }
 
+  }).catch((errors)=>{
+     console.log(errors);
+     
+    this.isSubmitting = false;
+    this.toastr.error(errors.message, 'Error occured');
 
-
+  })
 
 
   }
+
+
+
+
+
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+}
+
 
 
   // onSubmit() {
@@ -194,11 +290,6 @@ export class EditorComponent implements OnInit, OnDestroy {
   // }
 
 
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
-}
 
 // Destructuring is a JavaScript expression that makes it possible to unpack values from arrays, or properties from objects, into distinct variables. That is, we can extract data from arrays and objects and assign them to variables.
 

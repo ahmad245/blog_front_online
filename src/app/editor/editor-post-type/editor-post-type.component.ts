@@ -43,7 +43,7 @@ export class EditorPostTypeComponent implements OnInit {
    }
   onSubmit(){
     let postType=this.createForm.value.name;
-    console.log(postType);
+    
     
      this.pTS.post(postType).subscribe(data=>{
       

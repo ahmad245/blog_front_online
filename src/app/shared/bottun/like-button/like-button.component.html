@@ -1,4 +1,4 @@
-<button (click)="toggleColor()" mat-mini-fab [color]="toggle? 'white':'accent'"  [matBadge]="" matBadgePosition="before" matBadgeColor="accent" aria-label="Example icon-button with a heart icon">
+<button class="like" (click)="toggleColor()"  [disabled]="isSubmitting" mat-mini-fab [color]="toggle? 'white':'accent'"  [matBadge]="dataLikes.length" matBadgePosition="before" matBadgeColor="accent" aria-label="Example icon-button with a heart icon">
         <mat-icon [color]="toggle? 'accent':'white'">favorite</mat-icon>
       </button>
       <span class="cdk-visually-hidden">

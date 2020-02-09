@@ -1,32 +1,13 @@
 <div class="post-meta">
     <a href="#" class="post-meta-link"> 
-      <img src="../../../../assets/img/ah.jpg" class="post-meta-img">
+      <mat-icon class="post-meta-img" color="accent">tag_faces</mat-icon>
+     
     </a>
     <div class="post-meta-info">
         <a class="author"> {{post?.author.firstName}} </a>
-        <span class="date">{{post.date | date: 'longDate' }}</span>
+        <span class="date">{{post.date | date: 'longDate' }} </span>
         <span class="date">{{post.date | timeago:live }}</span>
       </div>
     <ng-content></ng-content>
   </div>
 
-<!-- <div class="post-meta">
-    <a href="#"> image</a>
-    <div class="info">
-            <a class="author">
-             post.author.username 
-            </a>
-            <span class="date">
-              article.createdAt | date: 'longDate' 
-            </span>
-          </div>
-          <ng-content></ng-content>
-</div> -->
-
-<!-- 
-<mat-card-header class="r">
-    <div mat-card-avatar class="example-header-image"> image</div>
-    <mat-card-title><a class="author"> post.author.username</a></mat-card-title>
-
-    <mat-card-subtitle> <span class="date"> article.createdAt | date: 'longDate' </span></mat-card-subtitle>
-</mat-card-header> -->

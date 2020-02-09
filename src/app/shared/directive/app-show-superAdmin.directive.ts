@@ -18,6 +18,8 @@ export class AppShowSuperAdminDirective implements OnInit {
     ) { }
     ngOnInit(): void {
         this.uS.isSuperAdmin.subscribe((isSuperAdmin) => {
+           
+            
             if (isSuperAdmin && this.condition || !isSuperAdmin && !this.condition) {
                 this.viewContainer.createEmbeddedView(this.templateRef)
             }

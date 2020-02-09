@@ -1,14 +1,13 @@
 <div class="sidebar-tag">
-        <p>Popular Tags</p>
+    <div class="viewer-nav__content">
+        <nav>
+        <mat-toolbar class="postTypeList">Popular Tags</mat-toolbar>
 
-        <div class="tag-list">
-            <!-- <a *ngFor="let tag of tags" 
-            (click)="setListTo('all', {tag: tag})"
-             class="tag-default tag-pill">
-                {{ tag }}
-            </a> -->
-        </div>
-
+        <mat-chip-list >
+            <mat-chip  *ngFor="let tag of tags" color="accent" (click)="fetchBy(tag)" selected>{{tag}} </mat-chip>
+          
+        </mat-chip-list>
+        </nav>
         <!-- <div [hidden]="tagsLoaded">
             Loading tags...
         </div> -->

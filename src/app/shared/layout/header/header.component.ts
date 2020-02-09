@@ -25,7 +25,7 @@ export class HeaderComponent implements OnInit {
     })
   }
   openDialog(type) {
-    console.log(type);
+  
     
     if(type==='register'){
 

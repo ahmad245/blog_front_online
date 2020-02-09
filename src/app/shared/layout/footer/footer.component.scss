@@ -3,8 +3,8 @@ footer {
     left: 0;
     bottom: 0;
     width: 100%;
-    padding: 12px;
-    font-size: 12px;
+    padding: .75rem;
+    font-size: .75rem;
     background: var(--base-color);
    
 }
@@ -12,7 +12,7 @@ footer {
     align-items: center;
 display: flex;
 flex-flow: row wrap;
-padding: 8px;
+padding: .5rem;
 color: #fff;
 }
 .footer-logo{
@@ -26,14 +26,14 @@ color: #fff;
     flex: 1;
 }
 .footer-angular-logo{
-    height: 50px;
-    width: 50px;
+    height: 3.12rem;
+    width: 3.12rem;
     border-radius: 50%;
 }
 .footer-logo span{
     display: inline-block;
-    line-height: 50px;
-    margin: 0 40px;
+    line-height: 3.12rem;
+    margin: 0 2.5rem;
     vertical-align: bottom;
 }
 a{

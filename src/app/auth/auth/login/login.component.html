@@ -11,19 +11,22 @@
         <div class="col-md-6 offset-md-3 col-xs-12">
             <h1 class="text-xs-center">{{ title }}</h1>
             <p class="text-xs-center">
-                <a [routerLink]="['/register']" *ngIf="authType == 'login'">Need an account?</a>
+                <a [routerLink]="['/register']" (click)="onClose()">Need an account?</a>
             </p>
             <!-- <app-list-errors [errors]="errors"></app-list-errors> -->
+            <p class="text-xs-center">
+                <a class="confirm" (click)="openConfirm()" >Are you registered and need to confirm the code?</a>
+            </p>
             <form class="form" (ngSubmit)="onSubmit()" [formGroup]="createForm">
             
                 <fieldset [disabled]="isSubmitting">
                 <div class="example-container">
                    
-                 
+              
                      
                     <!-- /////////////////////////////////////////EMAIL(UserNAME)////////////////////////////////////////////////// -->
 
-                    <mat-form-field hintLabel="Max 10 characters">
+                    <mat-form-field hintLabel="Max 255 characters">
                         <input matInput #email placeholder="Enter Your Email*" formControlName="email">
                         <mat-hint align="end">{{email.value?.length || 0}}/255</mat-hint>
 
@@ -35,13 +38,13 @@
 
                     </mat-form-field>
                     <!-- /////////////////////////////////////////PASSWORD////////////////////////////////////////////////// -->
-                    <mat-form-field hintLabel="Max 10 characters">
+                    <mat-form-field hintLabel="Max 50 characters">
                         <input matInput [type]="hide ? 'password' : 'text'" #password
                             placeholder="Enter Your password*" formControlName="password">
                         <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}
                         </mat-icon>
-                        <mat-hint align="end">{{password.value?.length || 0}}/255</mat-hint>
-                        <mat-error *ngIf="createForm.controls['password'].errors?.minlength">Minimum 3 charactor
+                        <mat-hint align="end">{{password.value?.length || 0}}/50</mat-hint>
+                        <mat-error *ngIf="createForm.controls['password'].errors?.minlength">Minimum 6 charactor
                         </mat-error>
                         <mat-error *ngIf="createForm.controls['password'].errors?.required">this field is required
                         </mat-error>
@@ -49,9 +52,10 @@
                 
 
                 </div>
-            </fieldset>
-                <button type="submit" [disabled]="createForm.invalid" mat-raised-button
+           
+                <button type="submit" [class.spinner]="isSubmitting" [disabled]="createForm.invalid || isSubmitting " mat-raised-button
                     color="accent">{{createForm.value._id!==""?'update':'save'}}</button>
+                </fieldset>
             </form>
         </div>
 

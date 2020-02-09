@@ -1,10 +1,10 @@
 .mat-list-base .mat-list-item {
     color: #fff;
     position: relative;
-    // margin-bottom: .5rem;
-    // width: 100%;
+   
     cursor: pointer;
     display: flex;
+    font-size: 1.2rem;
   }
   
   .mat-list-item::before {

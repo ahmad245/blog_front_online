@@ -3,67 +3,37 @@
     <div class="card">
         <div class="card-title">
             <app-post-meta [post]="post"> </app-post-meta>
-            <span class="grow"></span>
+            
+            <span class="grow" color="white"> </span>
+            <mat-icon class="grow-icon" color="white" [matBadge]="post.comments?.length" matBadgePosition="before" matBadgeColor="accent" aria-label="Example icon-button with a heart icon">mode_comment</mat-icon  >
             <div class="l">
                 <app-like-button [post]="post"></app-like-button>
             </div>
-
         </div>
         <a class="preview-link">
-            <h1>{{post.title}}  </h1>
-            <p [innerHtml]="post.content | shorten:50">  </p>
+            <h1><mat-icon class="subtitles-icon">subtitles</mat-icon> {{post.title}}  </h1>
+          <p [innerHtml]="post.content | shorten:100">  </p>
             <a [routerLink]="['/post',post.id]" class="btn-text">Learn more &rarr;</a>
-            <mat-chip-list aria-label="Fish selection">
-                <mat-chip color="accent" selected>tag 1</mat-chip>
-                <mat-chip color="accent" selected>tag 2</mat-chip>
-                <mat-chip color="accent" selected>tag 3</mat-chip>
-                <mat-chip color="accent" selected>tag 4</mat-chip>
+           
+            <mat-chip-list >
+                <mat-chip  *ngFor="let tag of post.tags" color="accent" (click)="fetchBy(tag.name)" selected>{{tag.name}} </mat-chip>
+              
             </mat-chip-list>
+            <div class="description">
+                <div class="mb-wrap mb-style-2">  
+                    <blockquote cite="">  
+                      <p> {{post.description | shorten:60}}</p>
+                    </blockquote>
+                  </div><!--#mb-wrap-->
+<!--                
+                <blockquote>
+                   <mat-icon class="description-icon">description</mat-icon> {{post.description}}
+                </blockquote> -->
+               
+            </div>
 
         </a>
     </div>
-    <form >
-      
-    </form>
+    
   
-    <!-- <mat-card class="example-card">
-                <div class="card-t">
-                   <app-post-meta>
-                        
-                   </app-post-meta>
-            
-                    <div class="l"><app-like-button></app-like-button></div>
-            
-                </div>
-                 <div class="img-card">
-                        <img   src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu" class="img-card-body">
-
-                 </div>
-                <mat-card-content>
-                    <p>
-                        The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-                        A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
-                        bred for hunting.
-                    </p>
-                </mat-card-content>
-                <mat-card-actions>
-                    <button mat-button>LIKE</button>
-                    <button mat-button>SHARE</button>
-                </mat-card-actions>
-            </mat-card> -->
-
-
-    <!-- <app-post-meta>
-     
-    </app-post-meta>
-    <a class="preview-link">
-        <h1>article.title </h1>
-        <p>article.description </p>
-        <span>Read more...</span>
-        <ul class="tag-list">
-            <li class="tag-default tag-pill tag-outline">
-                tag list
-            </li>
-        </ul>
-    </a> -->
 </div>

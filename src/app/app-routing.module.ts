@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
+import { AuthAdminGuardService } from './core/services/auth-admin-guard.service';
 
 const routes:Routes=[
   {

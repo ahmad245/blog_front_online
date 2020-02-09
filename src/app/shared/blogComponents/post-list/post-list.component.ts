@@ -4,7 +4,7 @@ import { Component, OnInit, OnDestroy, Input, ContentChild, ViewChild } from '@a
 import { IPost } from 'src/app/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { switchMap, map } from 'rxjs/operators';
+import { switchMap, map, retry } from 'rxjs/operators';
 import { PageEvent, MatPaginator } from '@angular/material';
 
 @Component({
@@ -21,6 +21,7 @@ export class PostListComponent implements OnInit, OnDestroy {
   pagination=true;
   isLoading = false;
   search: any;
+  tag;
   @Input() postConfig: IPostConfig;
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   constructor(
@@ -38,7 +39,7 @@ export class PostListComponent implements OnInit, OnDestroy {
       switchMap(value => {
         this.isLoading=true;
         this.search = value;
-        if(!value)return this.pS.getAll(this.pagination, this.pageSize,this.page) 
+        if(!value)return this.pS.getAll(this.pagination, this.pageSize,this.page)
         else return this.pS.getAll(this.pagination, this.pageSize,this.page,`title=${value}`) 
         
       })
@@ -54,8 +55,8 @@ export class PostListComponent implements OnInit, OnDestroy {
           switchMap(param => {
             this.isLoading=true;
             this.type = param.get('type');
-            if (!this.type) return this.pS.getAll(this.pagination, this.pageSize,this.page); 
-            else return this.pS.getByType(this.type);
+            if (!this.type) return this.pS.getAll(this.pagination, this.pageSize,this.page) ; 
+            else return this.pS.getByType(this.type) ;
           })
         )
         
@@ -64,6 +65,24 @@ export class PostListComponent implements OnInit, OnDestroy {
           this.paginator.firstPage();
         })
     );
+//////////////////tag
+    this.subscription.add(
+      this.pS.tag.pipe(
+        switchMap(value => {
+          this.isLoading=true;
+          this.tag = value;
+         
+          
+          if(!value)return this.pS.getAll(this.pagination, this.pageSize,this.page)
+          else return this.pS.getByTag(this.pagination, this.pageSize,this.page,value) 
+          
+        })
+      ).subscribe((response) => {
+        this.subscribePost(response)
+        this.paginator.firstPage();
+      })
+      )
+  
 
 
   }
@@ -85,6 +104,8 @@ export class PostListComponent implements OnInit, OnDestroy {
     // this.posts = response.data.blogs.blogs;
      this.totalItem = response["hydra:totalItems"];
      this.isLoading = false;
+   
+     
     
     
   }

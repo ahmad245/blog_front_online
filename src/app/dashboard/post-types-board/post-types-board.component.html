@@ -1,8 +1,18 @@
+
+<div class="container post-board">
+  <div class="row">
+    <div class="col-md-6 offset-md-3 col-xs-12">
+
+      <h1 class="text-xs-center">Dashboard Post Type</h1>
+    </div>
+  </div>
+
+
 <div @todosAnimation class="todo">
-        <h1>Todos</h1>
+        <h1 class="text-xs-center">Types</h1>
       
           <mat-form-field  class="example-full-width"   >
-            <input required #itemInput type="text" matInput placeholder="Question Type" (keyup.enter)="addItem(itemInput)">
+            <input required #itemInput type="text" matInput placeholder="Post Type" (keyup.enter)="addItem(itemInput)">
             <mat-icon matSuffix>mode_edit</mat-icon>
           </mat-form-field>
       
@@ -21,3 +31,5 @@
           
         </mat-nav-list> 
       </div>
+
+</div>

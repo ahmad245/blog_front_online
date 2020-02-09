@@ -4,6 +4,7 @@ import { CommentService } from './../../core/services/comment.service';
 import { Component, OnInit, Input, EventEmitter, Output, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { MatProgressButtonOptions } from 'mat-progress-buttons';
 
 @Component({
   selector: 'app-comment',
@@ -16,6 +17,7 @@ export class CommentComponent implements OnInit,OnDestroy {
   @Output() deleteComment = new EventEmitter<boolean>();
   live=true;
   canModify: boolean;
+ 
   constructor(
      private cS: CommentService,
     private route: ActivatedRoute,
@@ -26,8 +28,9 @@ export class CommentComponent implements OnInit,OnDestroy {
 
    this.subscription.add( this.uS.currentUser.subscribe((userData)=>{
  
+    
       if(userData.roles){
-        this.canModify=(userData.roles[0]==="ROLE_SUPERADMIN");
+        this.canModify=(userData.roles[0]==="ROLE_SUPERADMIN") || (userData.email === this.comment.author.email);
       }
       else{
         this.canModify = (userData.email === this.comment.author.email);

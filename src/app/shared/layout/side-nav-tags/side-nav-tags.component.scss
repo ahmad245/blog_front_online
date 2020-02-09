@@ -1,10 +1,41 @@
 
-.sidebar-tag{
-    height: 2rem;
+// .sidebar-tag{
+   
+//     background: #333;
+//     margin: 25px;
+//     border-left: solid 4px #e91e63;
+//     top: 35px;
+//     padding-left: 25px;
+//     color: #ffffff;
+//   }
+  .mat-chip{
+    font-size: .8rem !important;
+  }
+  .viewer-nav {
+  
+  &__content {
+    margin-top: 1.56rem;
+    margin-right: 1.56rem;
+    
+    // width: 240px;
+    height: 100%;
+   
+    // overflow: auto;
     background: #333;
-    margin: 25px;
-    border-left: solid 4px #e91e63;
-    top: 35px;
-    padding-left: 25px;
-    color: #ffffff;
+  }
+}
+  .mat-toolbar-row, .mat-toolbar-single-row{
+    margin-bottom: 2rem;
+    justify-content: center;
+  }
+  .mat-toolbar {
+    background:  #eb2f64;
+  
+  color: #fff;
+   font-size: 1.6rem;
+    
+  }
+  
+ ::ng-deep .mat-chip-list-wrapper{
+    padding: 0 1rem !important;
   }

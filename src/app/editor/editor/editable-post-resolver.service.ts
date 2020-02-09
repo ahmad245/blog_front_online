@@ -10,6 +10,7 @@ import { IPost } from 'src/app/core';
 
 @Injectable()
 export class EditablePostResolver implements Resolve<IPost> {
+  isAdmin:boolean;
   constructor(
     private pS: PostService,
     private router: Router,
@@ -20,8 +21,27 @@ export class EditablePostResolver implements Resolve<IPost> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<any> {
-
-    return this.pS.getById(route.paramMap.get('id'))
+   
+     this.uS.isAdmin.subscribe((data)=>{
+       this.isAdmin=data;
+     })
+    if(this.isAdmin){
+      return this.pS.getById(route.paramMap.get('id'))
+      .pipe(
+        map(
+         ( post:any) => {
+            if (post) {
+              return post;
+            } else {
+              this.router.navigateByUrl('/');
+            }
+          }
+        ),
+        catchError((err) => this.router.navigateByUrl('/'))
+      );
+    }
+    else{
+      return this.pS.getById(route.paramMap.get('id'))
       .pipe(
         map(
          ( post:any) => {
@@ -34,5 +54,7 @@ export class EditablePostResolver implements Resolve<IPost> {
         ),
         catchError((err) => this.router.navigateByUrl('/'))
       );
+    }
+    
   }
 }

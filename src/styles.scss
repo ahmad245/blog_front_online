@@ -21,7 +21,11 @@
 @import "~bootstrap/scss/utilities"; // add css utilities
 
 @import "./sass/abstracts/reset";
+@import "./sass/components/search";
+@import "./sass/components/spinner";
+@import "./sass/base/utilities";
 @import "./sass/responsive/responsive";
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; font-size: 100%;}
 app-spinner{
@@ -58,4 +62,13 @@ flex: 1 1 auto;
 }
 .tootlbar-header{
 margin-bottom: 10px;
+}
+
+ .mat-mini-fab .mat-button-wrapper {
+  padding: .5rem 0  !important;
+  display: inline-block !important;
+  line-height: 1.5rem !important;
+}
+.mat-chip{
+  font-size: 1rem !important;
 }

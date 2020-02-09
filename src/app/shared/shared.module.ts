@@ -1,3 +1,4 @@
+import { AppShowAdminDirective } from './directive/app-show-admin.directive';
 
 import { MaterialModule } from './../material/material.module';
 import { NgModule } from '@angular/core';
@@ -49,6 +50,7 @@ import { TimeagoModule } from 'ngx-timeago';
       AppShowWriterDirective,
       AppShowUpdaterDirective,
       AppShowDeleterDirective,
+      AppShowAdminDirective,
 
       ConfirmDialogComponent,
       ConfirmTokenComponent,
@@ -89,6 +91,7 @@ import { TimeagoModule } from 'ngx-timeago';
       AppShowWriterDirective,
       AppShowUpdaterDirective,
       AppShowDeleterDirective,
+      AppShowAdminDirective,
 
       ShortenPipe,
       MarkdownPipe,

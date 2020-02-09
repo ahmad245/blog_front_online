@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { MatTableDataSource, MatSort, MatPaginator, MatDialog, PageEvent } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from 'src/app/core/services/user.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 
 @Component({
@@ -35,6 +35,7 @@ export class PostsBoardComponent implements OnInit {
     public dialogService: DialogService,
     public uS: UserService,
     public pS: PostService,
+    private router: Router,
 
     private route: ActivatedRoute
   ) {
@@ -42,8 +43,12 @@ export class PostsBoardComponent implements OnInit {
   }
 
   ngOnInit() {
-
-
+  
+  //  if(this.uS.getCurrentUser().roles[0]!=='ROLE_ADMIN' || this.uS.getCurrentUser().roles[0]!=='ROLE_SUPERADMIN')
+  //  {
+  //   this.router.navigateByUrl('/');
+  //  }
+    
 
     this.isLoading = true;
 

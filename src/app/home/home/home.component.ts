@@ -14,6 +14,7 @@ export class HomeComponent implements OnInit {
   createForm;
   isSubmitting=false;
   isAuthenticated=false;
+  isProfiled=false;
   constructor(
     private route:ActivatedRoute,
     public fb: FormBuilder,
@@ -29,6 +30,13 @@ export class HomeComponent implements OnInit {
   
 
   ngOnInit() {
+    this.isProfiled=false;
     
+    
+  }
+  getProfile(){
+
+   this.isProfiled=true;
+ 
   }
 }

@@ -6,6 +6,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { DialogService } from 'src/app/core/services/dialog.service';
 import { Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { CustomValidators } from 'src/app/validator/custom-validators';
 
 
 @Component({
@@ -30,7 +31,7 @@ export class AuthComponent implements OnInit {
     public dialogRef:MatDialogRef<AuthComponent>,
     public dialogService: DialogService,
     public toastr:ToastrService,
-    
+  
     public fb: FormBuilder
   ) { 
 
@@ -42,7 +43,11 @@ export class AuthComponent implements OnInit {
         email:['',[Validators.required,Validators.minLength(3),Validators.email]],
         password:['',[Validators.required,Validators.minLength(6)]],
         confirmPassword:['',Validators.required],
-      });
+      },
+      {
+        // check whether our password and confirm password match
+        validator: CustomValidators.passwordMatchValidator
+     });
   }
 
   ngOnInit() {
@@ -53,6 +58,7 @@ export class AuthComponent implements OnInit {
     this.createForm.reset();
    }
   onSubmit(){
+    this.isSubmitting=true;
     let user={
         firstName:this.createForm.value.firstName,
         lastName:this.createForm.value.lastName,
@@ -62,13 +68,14 @@ export class AuthComponent implements OnInit {
     }
   this.subscription.add(  this.uS.attemptAuth(this.data.type,user).subscribe(
     res => {
-              
+      this.isSubmitting=false;
       this.toastr.success('Votre matière a été delete avec succès.', 'Success');
       this.onClose();
+      
       this.dialogService.openConfirmDialog("please type confirm code ");
     },
     err => {
-     
+      this.isSubmitting=false;
       this.toastr.error(err.message, 'Error occured');
   
     }

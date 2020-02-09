@@ -31,18 +31,18 @@
                     <mat-icon>playlist_add</mat-icon>
                     <span>New Type</span>
                 </a>
-                <a class=" mat-menu-item"  tabindex="0" aria-disabled="false" 
+                <a *appShowAdmin="true" class=" mat-menu-item"  tabindex="0" aria-disabled="false" 
                 routerLink="/dashboard">
                     <mat-icon>format_list_bulleted</mat-icon>
                     <span>Post Dashboard</span>
                 </a>
-                <a class=" mat-menu-item"  tabindex="0" aria-disabled="false" 
+                <a *appShowSuperAdmin="true" class=" mat-menu-item"  tabindex="0" aria-disabled="false" 
                 routerLink="/dashboard/users">
                     <mat-icon>format_list_bulleted</mat-icon>
                     <span>Users Dashboard</span>
                 </a>
                
-                <a class=" mat-menu-item"  tabindex="0" aria-disabled="false" 
+                <a *appShowAdmin="true" class=" mat-menu-item"  tabindex="0" aria-disabled="false" 
                 routerLink="/dashboard/postTypes">
                     <mat-icon>format_list_bulleted</mat-icon>
                     <span>PostTypes Dashboard</span>

@@ -17,7 +17,17 @@
     display: flex !important;
     justify-content: space-between !important;
     flex-flow: 1;
-    width: 100%;
+    width: 100% !important;
+}
+
+::ng-deep .mat-list-base .mat-list-item .mat-list-item-content, .mat-list-base .mat-list-option .mat-list-item-content {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    font-size: 1.2rem;
+}
+::ng-deep .list-group-item{
+    font-size: 1.2rem;
 }
 .span-todo{
     flex-flow: 1;

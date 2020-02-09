@@ -21,9 +21,9 @@
                     <div class="example-container">
                        
                         <!-- /////////////////////////////////////////NAME////////////////////////////////////////////////// -->
-                        <mat-form-field hintLabel="Max 10 characters" >
+                        <mat-form-field hintLabel="Max 50 characters" >
                             <input matInput #firstName placeholder="Enter Your firstName*" formControlName="firstName">
-                            <mat-hint align="end">{{firstName.value?.length || 0}}/255</mat-hint>
+                            <mat-hint align="end">{{firstName.value?.length || 0}}/50</mat-hint>
 
                             <mat-error *ngIf="createForm.controls['firstName'].errors?.minlength">Minimum 3 charactor
                             </mat-error>
@@ -32,9 +32,9 @@
 
                         </mat-form-field>
                            <!-- /////////////////////////////////////////NAME////////////////////////////////////////////////// -->
-                           <mat-form-field hintLabel="Max 10 characters">
+                           <mat-form-field hintLabel="Max 50 characters">
                             <input matInput #lastName placeholder="Enter Your lastName*" formControlName="lastName">
-                            <mat-hint align="end">{{lastName.value?.length || 0}}/255</mat-hint>
+                            <mat-hint align="end">{{lastName.value?.length || 0}}/50</mat-hint>
 
                             <mat-error *ngIf="createForm.controls['lastName'].errors?.minlength">Minimum 3 charactor
                             </mat-error>
@@ -44,7 +44,7 @@
                         </mat-form-field>
                         <!-- /////////////////////////////////////////EMAIL(UserNAME)////////////////////////////////////////////////// -->
 
-                        <mat-form-field hintLabel="Max 10 characters">
+                        <mat-form-field hintLabel="Max 255 characters">
                             <input matInput #email placeholder="Enter Your Email*" formControlName="email">
                             <mat-hint align="end">{{email.value?.length || 0}}/255</mat-hint>
 
@@ -61,7 +61,7 @@
                                 placeholder="Enter Your password*" formControlName="password">
                             <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}
                             </mat-icon>
-                            <mat-hint align="end">{{password.value?.length || 0}}/255</mat-hint>
+                            <mat-hint align="end">{{password.value?.length || 0}}/50</mat-hint>
                             <mat-error *ngIf="createForm.controls['password'].errors?.minlength">Minimum 3 charactor
                             </mat-error>
                             <mat-error *ngIf="createForm.controls['password'].errors?.required">this field is required
@@ -72,7 +72,7 @@
                                 placeholder="Enter Your confirmPassword*" formControlName="confirmPassword">
                             <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}
                             </mat-icon>
-                            <mat-hint align="end">{{password.value?.length || 0}}/255</mat-hint>
+                            <mat-hint align="end">{{password.value?.length || 0}}/50</mat-hint>
                             <mat-error *ngIf="createForm.controls['confirmPassword'].hasError('NoPassswordMatch')">No
                                 Maching</mat-error>
                         </mat-form-field>
@@ -82,7 +82,7 @@
 
                     </div>
                 </fieldset>
-                    <button type="submit" [disabled]="createForm.invalid" mat-raised-button
+                    <button type="submit" [class.spinner]="isSubmitting" [disabled]="createForm.invalid || isSubmitting " mat-raised-button
                         color="accent">{{createForm.value._id!==""?'update':'save'}}</button>
                 </form>
             </div>

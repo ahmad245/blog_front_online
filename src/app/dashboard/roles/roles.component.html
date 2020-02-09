@@ -4,7 +4,7 @@
     <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabIndex="-1"><mat-icon>clear</mat-icon></button>
   </mat-toolbar>
   <form class="form" (ngSubmit)="onSubmit()" [formGroup]="createForm">
-  
+    <fieldset [disabled]="isSubmitting">
   <mat-form-field>
     <mat-select placeholder="Select me" name="roles" formControlName="roles">
       <mat-option [value]=item *ngFor="let item of role">{{item}}</mat-option>
@@ -14,8 +14,8 @@
   </mat-form-field>
   <!-- *ngIf="data.role.name!=='admin' ||data.role.name!=='user' " -->
   
-    <mat-checkbox  name="isActive" [value]='data.isAdmin' formControlName="isAdmin"><h4 mat-line>isAdmin</h4></mat-checkbox>     
+    <!-- <mat-checkbox  name="isActive" [value]='data.isAdmin' formControlName="isAdmin"><h4 mat-line>isAdmin</h4></mat-checkbox>      -->
   
   <button type="submit" [disabled]="createForm.invalid" mat-raised-button color="accent">save</button>
-  
+  </fieldset>
   </form>

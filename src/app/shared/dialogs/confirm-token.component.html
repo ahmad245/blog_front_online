@@ -4,7 +4,7 @@
       <span class="content-span full-width">{{data.message}}</span>
     </div>
     <form class="form" (ngSubmit)="onSubmit()" [formGroup]="createForm">
-                    
+      <fieldset class="form-input" [disabled]="isSubmitting">          
           <!-- /////////////////////////////////////////NAME////////////////////////////////////////////////// -->
           <mat-form-field hintLabel="Max 10 characters">
               <input matInput #confirmationToken placeholder="Enter Your confirmationToken*" formControlName="confirmationToken">
@@ -16,7 +16,9 @@
               </mat-error>
 
           </mat-form-field>
-          <button type="submit" mat-flat-button color="accent" id="yes-button" >Confirm</button>
-</form>
+          <button type="submit" [class.spinner]="isSubmitting" [disabled]="createForm.invalid || isSubmitting " mat-flat-button color="accent" id="yes-button" >Confirm</button>
+
+        </fieldset>
+        </form>
     
   </div>

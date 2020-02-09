@@ -20,7 +20,7 @@ export class AppShowWriterDirective implements OnInit {
         this.uS.isWriter.subscribe((isWriter) => {
             // console.log(isWriter);
             
-            if (isWriter && this.condition || !isWriter && !this.condition) {
+            if (isWriter && this.condition || !isWriter && !this.condition ) {
                 this.viewContainer.createEmbeddedView(this.templateRef)
             }
             else {

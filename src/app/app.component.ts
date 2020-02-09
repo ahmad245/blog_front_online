@@ -39,3 +39,9 @@ export class AppComponent implements OnInit {
    this.uS.populate();
   }
 }
+
+// "@ngrx/effects": "^8.3.0",
+// "@ngrx/entity": "^8.3.0",
+// "@ngrx/router-store": "^8.3.0",
+// "@ngrx/store": "^8.3.0",
+// "@ngrx/store-devtools": "^8.3.0",

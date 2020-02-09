@@ -28,6 +28,7 @@ export class ProfilePostsComponent implements OnInit ,OnDestroy{
     private pS: PostService,
     private route: ActivatedRoute,
     private jwtService: JwtService,
+ 
   ) { }
   type: string;
   posts: IPost[] = [];
@@ -35,10 +36,20 @@ export class ProfilePostsComponent implements OnInit ,OnDestroy{
   subscription = new Subscription();
 
   ngOnInit() {
-    this.id=+this.jwtService.getTokenId()
+
+   let userIdRoute= this.route.snapshot.queryParamMap.get('userId');
+    if(userIdRoute){
+      this.id=userIdRoute
+    }
+    else{
+      this.id=+this.jwtService.getTokenId();
+    }
+   
+    
+
   
     if(this.id){
-      console.log('true');
+     
       
     this.subscription.add(  this.pS.getAllPostByUser(this.id,this.pagination, this.pageSize,this.page) 
       .subscribe((response) => {
@@ -47,7 +58,7 @@ export class ProfilePostsComponent implements OnInit ,OnDestroy{
       })
     );
     }
-    console.log('false');
+
     
   }
   onChangePage(pageData: PageEvent) {
@@ -68,6 +79,8 @@ export class ProfilePostsComponent implements OnInit ,OnDestroy{
     // this.posts = response.data.blogs.blogs;
      this.totalItem = response["hydra:totalItems"];
      this.isLoading = false;
+  
+     
     
     
   }

@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/core/services/user.service';
 import { DialogService } from 'src/app/core/services/dialog.service';
 import { ToastrService } from 'ngx-toastr';
+import { CustomValidators } from 'src/app/validator/custom-validators';
 
 @Component({
   selector: 'app-create-user',
@@ -40,34 +41,42 @@ export class CreateUserComponent implements OnInit {
         email:['',[Validators.required,Validators.minLength(3),Validators.email]],
         password:['',[Validators.required,Validators.minLength(6)]],
         confirmPassword:['',Validators.required],
-        roles:['']
-      });
+        
+      },
+      {
+        // check whether our password and confirm password match
+        validator: CustomValidators.passwordMatchValidator
+     });
   }
-
   ngOnInit() {
-      this.roles= this.uS.getRoles();
+     
   }
   onClose(){
    
     this.createForm.reset();
    }
   onSubmit(){
+    this.isSubmitting=true;
     let user={
         firstName:this.createForm.value.firstName,
         lastName:this.createForm.value.lastName,
         email:this.createForm.value.email,
         password:this.createForm.value.password,
         confirmPassword:this.createForm.value.confirmPassword,
-        roles:[this.createForm.value.roles],
+      
     }
+    console.log(user);
+    
   this.subscription.add(  
-    this.uS.signUp(user.firstName,user.lastName,user.email,user.password,user.confirmPassword,user.roles)
+    this.uS.signUp(user.firstName,user.lastName,user.email,user.password,user.confirmPassword)
     .subscribe( res => {
-              
+      this.isSubmitting=false;
       this.toastr.success('Votre matière a été delete avec succès.', 'Success');
     },
     err => {
-        console.log(err);
+      console.log(err);
+      
+      this.isSubmitting=false;
         
       this.toastr.error(err.message, 'Error occured');
 

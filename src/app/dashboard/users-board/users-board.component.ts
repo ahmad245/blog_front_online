@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from 'src/app/core/services/user.service';
 import { PostService } from 'src/app/core/services/post.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import { RolesComponent } from '../roles/roles.component';
 import { DialogService } from 'src/app/core/services/dialog.service';
@@ -52,7 +52,7 @@ superAdmin="superAdmin";
     public toastr:ToastrService,
     public dialogService: DialogService,
     public uS:UserService,
-    public pS:PostService,
+    public pS:PostService,private router: Router,
 
     private route:ActivatedRoute
     ) {
@@ -60,6 +60,10 @@ superAdmin="superAdmin";
    }
 
    ngOnInit() {
+    if(this.uS.getCurrentUser().roles[0]!=='ROLE_SUPERADMIN')
+    {
+     this.router.navigateByUrl('/');
+    }
     this.isLoading = true;
     this.uS.getAll(this.pagination, this.pageSize,this.page);
   this.subscription.add( this.uS.users.subscribe((data)=>{
@@ -78,7 +82,7 @@ superAdmin="superAdmin";
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = "70%";
+    dialogConfig.width = "50%";
     dialogConfig.data={user:row}
     // dialogConfig.data={type:type};
     //dialogConfig.restoreFocus=true;
@@ -138,9 +142,9 @@ superAdmin="superAdmin";
 
   subscribeUser(response) {
     console.log(response);
-    this.listData = new MatTableDataSource(response);
+    this.listData = new MatTableDataSource(response["hydra:member"]);
     this.listData.sort = this.sort;
-    // this.totalItem = response["hydra:totalItems"];
+     this.totalItem = response["hydra:totalItems"];
     this.isLoading = false;
     
     

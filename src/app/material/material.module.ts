@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import * as Material from "@angular/material";
 import {DragDropModule} from '@angular/cdk/drag-drop'; 
+import { MatProgressButtonsModule } from 'mat-progress-buttons';
 
 @NgModule({
   declarations: [],
@@ -34,7 +35,8 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     Material.MatBadgeModule,
     Material.MatProgressSpinnerModule,
     Material.MatTabsModule,
-    DragDropModule
+    DragDropModule,
+    MatProgressButtonsModule.forRoot()
  
     
   ],
@@ -66,7 +68,8 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     Material.MatBadgeModule,
     Material.MatProgressSpinnerModule,
     Material.MatTabsModule,
-    DragDropModule
+    DragDropModule,
+    MatProgressButtonsModule
   ]
 })
 export class MaterialModule { }

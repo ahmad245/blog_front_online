@@ -1,62 +1,140 @@
-
 // // breakpoint only:
-@include media-breakpoint-only(xs) { 
-    html,body{ font-size: 60% ;} 
+@include media-breakpoint-only(xs) {
+
+  html,
+  body {
+    font-size: 60%;
+  }
+
+  .container {
+    max-width: 100%;
+  }
+
+  app-post-type {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .viewer-nav__content {
+    height: 100%;
+    min-height: 100% !important;
+    margin-right: 0 !important;
+
+  }
+
+  mat-list-item {
+    flex: 1;
+  }
+
+  .banner {
+    padding-top: 8rem !important;
     
-    .container{
-        max-width: 100%;
-    }
-    app-post-type{
-        display: flex;
-        flex-wrap: wrap;
-    }
-    .viewer-nav {
-      
-        &__content {
-          height: 100%;
-          min-height: 100%;
-         
-         
-        }
-      }
-      mat-list-item{
-          flex: 1;
-      }
-}
- @include media-breakpoint-only(sm) { 
-     html,body{font-size: 70% ; } 
-   
-     .container{
-        max-width: 100%;
-    }
-    app-post-type{
-        display: flex;
-        flex-wrap: wrap;
-    }
-    .viewer-nav {
-      
-        &__content {
-          height: 100%;
-          min-height: 100%;
-         
-         
-        }
-      }
-      mat-list-item{
-          flex: 1;
-      }
-     
   }
-  @include media-breakpoint-only(md) { html,body{font-size: 80% ; } 
- 
-  .container{
-      max-width: 100%;
+
+  .editor {
+    margin-top: 10rem !important;
   }
- 
+
+  .post-board {
+    margin-top: 10rem !important;
+
+  }
+  .todo >*{
+    width: 100% !important;
+   }
 }
-  @include media-breakpoint-only(lg) { html,body{font-size: 90% ;  .title{
-   padding-top: 3rem;
- }}  }
-  @include media-breakpoint-only(xl) { html,body{font-size: 100% ; }  }
- 
- 
+
+@include media-breakpoint-only(sm) {
+
+  html,
+  body {
+    font-size: 70%;
+  }
+
+  .container {
+    max-width: 100%;
+  }
+
+  app-post-type {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+
+  .viewer-nav__content {
+    height: 100%;
+    min-height: 100% !important;
+    margin-right: 0 !important;
+
+  }
+
+  mat-list-item {
+    flex: 1;
+  }
+
+  .banner {
+    padding-top: 4rem !important;
+
+  }
+
+  .editor {
+    margin-top: 7rem !important;
+  }
+
+  .post-board {
+    margin-top: 9rem !important;
+  }
+  .todo >*{
+    width: 90% !important;
+   }
+}
+
+@include media-breakpoint-only(md) {
+
+  html,
+  body {
+    font-size: 80%;
+  }
+
+  .container {
+    max-width: 100%;
+  }
+
+  .post-board {
+    margin-top: 7rem !important;
+  }
+  .todo >*{
+    width: 80% !important;
+   }
+
+}
+
+@include media-breakpoint-only(lg) {
+
+  html,
+  body {
+    font-size: 90%;
+
+    .post-board {
+      margin-top: 7rem !important;
+    }
+    .todo >*{
+      width: 50% !important;
+     }
+  }
+}
+
+@include media-breakpoint-only(xl) {
+
+  html,
+  body {
+    font-size: 100%;
+
+    .post-board {
+      margin-top: 7rem !important;
+    }
+    .todo >*{
+      width: 50% !important;
+     }
+  }
+}

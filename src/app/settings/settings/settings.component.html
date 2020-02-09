@@ -1,5 +1,6 @@
+
 <div class="settings-page">
-    <div class="container page">
+    <div class="container  post-board page">
         <div class="row">
             <div class="col-md-6 offset-md-3 col-xs-12">
 
@@ -67,13 +68,16 @@
 
 
                         </div>
-                    </fieldset>
-                    <button type="submit" [disabled]="createForm.invalid" mat-raised-button color="accent">Update
+                  
+                    <button type="submit" [class.spinner]="isSubmitting" [disabled]="createForm.invalid || isSubmitting " mat-raised-button color="accent">Update
                         Settings</button>
                     <!-- Line break for logout button -->
                     <hr />
+                    <button type="button" (click)="openDialog()"  mat-raised-button color="accent">Reset Password</button>
+                    <!-- Line break for logout button -->
+                    <hr />
                     <button mat-raised-button color="warn" (click)="logout()"> Or click here to logout.</button>
-
+                </fieldset>
                 </form>
             </div>
         </div>

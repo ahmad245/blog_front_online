@@ -7,7 +7,8 @@
         </div>
         
     <form  class="editor-form"[formGroup]="createForm" (ngSubmit)="onSubmit()">
-            
+        <fieldset [disabled]="isSubmitting">
+
             <mat-form-field>
               <mat-label>Post Type</mat-label>
               <mat-select formControlName="blogType" required>
@@ -21,6 +22,9 @@
             </mat-form-field>
         <mat-form-field>
             <input matInput placeholder="Post Title" formControlName="title">
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput placeholder="Post description" formControlName="description">
         </mat-form-field>
        
       
@@ -50,11 +54,15 @@
          <mat-form-field>
             <input matInput placeholder="Slug" formControlName="slug">
         </mat-form-field>
-      
+        <mat-form-field>
+            <input matInput placeholder="Post tags" formControlName="tags">
+        </mat-form-field>
+       
         <mat-checkbox formControlName="publish">Is Publishid!</mat-checkbox>
-
+  
         <div class="button-row">
-            <button mat-raised-button color="accent">Publish</button>
+            <button mat-raised-button color="accent" [class.spinner]="isSubmitting" [disabled]="createForm.invalid || isSubmitting" >Publish</button>
         </div>
+        </fieldset>
     </form>
 </div>

@@ -3,10 +3,9 @@ import { Injectable } from '@angular/core';
 
 import { BehaviorSubject, ReplaySubject, Observable, Subject, observable } from 'rxjs';
 import { IUser } from '..';
-import { distinctUntilChanged, map } from 'rxjs/operators';
+import { distinctUntilChanged, map, retry } from 'rxjs/operators';
 import { JwtService } from './jwt.service';
 import { HttpClient, HttpBackend } from '@angular/common/http';
-
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +18,7 @@ export class UserService {
   public isAuthenticated = this.isAuthenticatedSubject.asObservable();
 
   private isAdmindSubject = new ReplaySubject<boolean>(1);
-  public isAdmin = this.isAuthenticatedSubject.asObservable();
+  public isAdmin = this.isAdmindSubject.asObservable();
 
 
   private isSuperAdmindSubject = new ReplaySubject<boolean>(1);
@@ -48,11 +47,12 @@ export class UserService {
     this.http2=new HttpClient(handler);
   }
 
-  
+
   getAll(pagination?, itemsPerPage?,page?,search?){
     return this.http.get(this.rootUrl+`/api/users?pagination=${pagination}&itemsPerPage=${itemsPerPage}&_page=${page}&${search}`)
-    .subscribe((data)=>{
-     
+    .pipe(retry(2)).subscribe((data)=>{
+    
+      
       
        this.allUser=data;
        this.users.next(true);
@@ -62,14 +62,13 @@ export class UserService {
     // return this.gQLService.query(this.userQuerie.userById(['name']), { id })
   }
   getMe(id) {
-   return this.http.get(this.rootUrl+'/api/users/'+id);
+   return this.http.get(this.rootUrl+'/api/users/'+id).pipe(retry(2));
   }
   login(email, password) {
-    return this.http2.post(this.rootUrl+`/api/login_check`,{username:email ,password})
+    return this.http2.post(this.rootUrl+`/api/login_check`,{username:email ,password}).pipe(retry(2));
   }
-  signUp(firstName, lastName,email ,password,confirmPassword,roles?):Observable<any> {
-    if(roles) return this.http2.post(this.rootUrl+`/api/users`,{firstName, lastName,email ,password,confirmPassword,roles})
-    else return this.http2.post(this.rootUrl+`/api/users`,{firstName, lastName,email ,password,confirmPassword})
+  signUp(firstName, lastName,email ,password,confirmPassword):Observable<any> {
+     return this.http2.post(this.rootUrl+`/api/users`,{firstName, lastName,email ,password,confirmPassword}).pipe(retry(2));
   }
   confirmToken(confirmationToken){
     return this.http2.post(this.rootUrl+'/api/users/confirm',{confirmationToken:confirmationToken});
@@ -86,7 +85,10 @@ export class UserService {
     return this.http.delete(this.rootUrl+"/api/users/"+id);
   }
   put(id,user){
-    return this.http.put(this.rootUrl+`/api/users/${id}`,{firstName:user.firstName,lastName:user.lastName,email:user.email});
+    return this.http.put(this.rootUrl+`/api/users/${id}`,{firstName:user.firstName,lastName:user.lastName,email:user.email}).pipe(retry(2));;
+  }
+  resetPassword(id,newPassword,newRetypedPassword,oldPassword){
+    return this.http.put(this.rootUrl+`/api/users/${id}/reset-password`,{newPassword,newRetypedPassword,oldPassword}).pipe(retry(2));
   }
   /////////////////////////////////////////////////////////////////////
 
@@ -101,17 +103,16 @@ export class UserService {
       this.getMe(userInf).subscribe(
         response => {  
         
-          console.log(response);
+       
           
           this.setAuth(response)
-         // console.log(response);
+        
          },
           
           
 
-        // data => this.setAuth(data.user),
         err => {
-         console.log(err);
+        
          
          this.purgeAuth()
         }
@@ -119,8 +120,7 @@ export class UserService {
 
     } else {
            this.isAuthenticatedSubject.next(false);
-      //  Remove any potential remnants of previous auth states
-     // this.purgeAuth();
+      
     }
   }
 
@@ -156,12 +156,12 @@ export class UserService {
       this.isSuperAdmindSubject.next(true);
     }
 
-    if (userInf.roles[0] === "ROLE_WRITER" || userInf.roles[0] === "ROLE_SUPERADMIN") {
+    if (userInf.roles[0] === "ROLE_WRITER" || userInf.roles[0] === "ROLE_SUPERADMIN" || userInf.roles[0]==="ROLE_ADMIN") {
     
       this.isWriterdSubject.next(true);
     }
 
-   else if (userInf.roles[0] === "ROLE_EDITOR" || userInf.roles[0] === "ROLE_SUPERADMIN") {
+   else if (userInf.roles[0] === "ROLE_EDITOR" || userInf.roles[0] === "ROLE_SUPERADMIN" || userInf.roles[0]==="ROLE_ADMIN") {
      
       this.isUpdaterSubject.next(true);
     }
@@ -199,7 +199,7 @@ export class UserService {
       )
     }
     else {
-      console.log(credentials);
+     
       
       return this.signUp(credentials.firstName, credentials.lastName, credentials.email, credentials.password, credentials.confirmPassword);
     }

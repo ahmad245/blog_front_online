@@ -16,6 +16,7 @@ export class RolesComponent implements OnInit, OnDestroy {
   createForm: FormGroup;
   role = [];
   subscription = new Subscription();
+  isSubmitting = false;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data, public dialog: MatDialogRef<RolesComponent>,
     public fb: FormBuilder,
@@ -46,9 +47,10 @@ export class RolesComponent implements OnInit, OnDestroy {
     this.dialog.close();
   }
   onSubmit() {
+    this.isSubmitting = true;
     let role = this.createForm.value.roles;
     this.uS.updateRoleUser(this.data.user.id, role).subscribe((data) => {
-      console.log(data);
+      this.isSubmitting = false;
       this.uS.getAll();
 
     })

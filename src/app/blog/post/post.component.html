@@ -6,31 +6,37 @@
       <div class="banner-meta">
 
         <app-post-meta [post]="post"></app-post-meta>
-        <div class="button-row">
-          <a   [routerLink]="['/editor', post.id]" mat-raised-button color="accent">
+         
+        <div *appShowWriter="true" class="button-row">
+          <a [hidden]="!canModify" [routerLink]="['/editor', post.id]" mat-raised-button color="accent" class="button-row__edit">
             <mat-icon>edit</mat-icon> Edit Post
           </a>
-          <button  mat-raised-button color="warn">
+          <button [hidden]="!canModify" [disabled]="isSubmitting" (click)="delete()" mat-raised-button color="warn">
             <mat-icon>delete</mat-icon>Delete Post
           </button>
+         
         </div>
-        <app-like-button class="bl"></app-like-button>
+        <app-like-button [post]="post" class="bl"></app-like-button>
+    
       </div>
 
- 
+
     </div>
   </div>
 
   <div class="container page">
 
     <div class="row article-content">
-      <div *ngIf="post && post.images[0]?.url"  class="col-xs-12 col-md-8 offset-md-2 my-2 article-content__text">
-        <!-- <p> {{post.description}} </p> -->
-          <img [src]="'http://localhost:8080'+post.images[0].url" alt="" srcset="" style="width: 100%;" class="img-fluid" >
+      <div *ngIf="post.images[0]?.url" class="col-xs-12 col-md-8 offset-md-2 my-2 article-content__text">
+
+        <div [style.backgroundImage]="'url('+api+post.images[0].url+ ')'" class="thumbl">
+        </div>
+
+        <!-- <img [src]="'http://localhost:8080'+post.images[0].url" alt="" srcset="" style="width: 100%; max-height: 15rem;" class="img-fluid" > -->
       </div>
       <div class="col-xs-12 col-md-8 offset-md-2 my-2 article-content__text">
         <!-- <p> {{post.description}} </p> -->
-        <quill-view-html  [content]="post.content" theme="snow"></quill-view-html>
+        <quill-view-html [content]="post.content" theme="snow"></quill-view-html>
       </div>
       <!-- <div class="col-xs-12 col-md-8 offset-md-2 my-2">
         <mat-chip-list aria-label="Fish selection">
@@ -40,39 +46,39 @@
                 <mat-chip color="accent" selected>tag 4</mat-chip>
             </mat-chip-list>
           </div> -->
-    
+
     </div>
 
-    
+
 
     <div class="row">
       <div class="col-xs-12 col-md-8 offset-md-2  my-2">
 
 
         <!-- *appShowAuthed="true" -->
-        <div *appShowAuthed="true"  @todosAnimation class="todo">
+        <div *appShowAuthed="true" @todosAnimation class="post-comment">
           <h3>Comments</h3>
           <!-- <app-list-errors [errors]="commentFormErrors"></app-list-errors> -->
-          <form class="card comment-form" [formGroup]="createForm" (ngSubmit)="addComment()" >
+          <form class="card comment-form" [formGroup]="createForm" (ngSubmit)="addComment()">
             <!-- [disabled]="isSubmitting" -->
             <fieldset [disabled]="isSubmitting">
               <div class="card-block">
-                <textarea   (@todoAnimation.start)="animationStarted($event)"  (@todoAnimation.done)="animationDone($event)" #message class="form-control" formControlName="message" placeholder="Write a comment..." rows="3"></textarea>
-                <mat-hint align="end">{{message.value?.length || 0}}/255</mat-hint>
+                <textarea (@todoAnimation.start)="animationStarted($event)"
+                  (@todoAnimation.done)="animationDone($event)" #message class="form-control" formControlName="message"
+                  placeholder="Write a comment..." rows="3"></textarea>
+                <mat-hint align="end">{{message.value?.length || 0}}/2000</mat-hint>
 
-                <mat-error *ngIf="createForm.controls['message'].errors?.minlength">Minimum 3 charactor
-                </mat-error>
-                <mat-error *ngIf="createForm.controls['message'].errors?.required">this field is required
-                </mat-error>
+               
               </div>
               <div class="card-footer">
                 <!-- [src]="currentUser.image" -->
                 <mat-icon color="accent">tag_faces</mat-icon>
                 <span class="space"></span>
-                <button [disabled]="createForm.invalid" mat-raised-button color="accent" type="submit">
+                <button [class.spinner]="isSubmitting" [disabled]="createForm.invalid || isSubmitting " mat-raised-button color="accent" type="submit">
                   <mat-icon>add_comment</mat-icon>
                 </button>
               </div>
+           
             </fieldset>
           </form>
         </div>
@@ -82,47 +88,17 @@
           <a [routerLink]="['/login']">Sign in</a> or <a [routerLink]="['/register']">sign up</a> to add comments on
           this article.
         </div>
-        <app-spinner *ngIf="isLoading"  ></app-spinner>
-        <app-comment   *ngFor="let comment of comments"
-        [comment]="comment"  (deleteComment)="onDeleteComment(comment)"></app-comment>
-        <button (click)="load()" *ngIf="totalItem>comments.length"  mat-raised-button color="accent" type="submit">
-          loading more .... 
-          </button>
+        
+        <app-comment *ngFor="let comment of comments" @todoAnimation (@todoAnimation.start)="animationStarted($event)"
+          (@todoAnimation.done)="animationDone($event)" [comment]="comment" (deleteComment)="onDeleteComment(comment)">
+        </app-comment>
+        <button class="loading-more" (click)="load()" *ngIf="totalItem>comments.length" mat-raised-button color="accent" type="submit">
+          loading more ....
+        </button>
 
       </div>
     </div>
 
   </div>
 </div>
-
-
-
-     <!-- <app-article-meta [article]="article">
-  
-            <span [hidden]="!canModify">
-            <a class="btn btn-sm btn-outline-secondary"
-               [routerLink]="['/editor', article.slug]">
-              <i class="ion-edit"></i> Edit Article
-            </a>
-  
-            <button class="btn btn-sm btn-outline-danger"
-              [ngClass]="{disabled: isDeleting}"
-              (click)="deleteArticle()">
-              <i class="ion-trash-a"></i> Delete Article
-            </button>
-          </span>
-  
-          <span [hidden]="canModify">
-            <app-follow-button
-              [profile]="article.author"
-              (toggle)="onToggleFollowing($event)">
-            </app-follow-button>
-  
-            <app-favorite-button
-              [article]="article"
-              (toggle)="onToggleFavorite($event)">
-              {{ article.favorited ? 'Unfavorite' : 'Favorite' }} Article <span class="counter">({{ article.favoritesCount }})</span>
-            </app-favorite-button>
-          </span>
-  
-        </app-article-meta> -->
+<app-spinner *ngIf="isLoading"></app-spinner>

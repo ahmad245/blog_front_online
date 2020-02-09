@@ -26,7 +26,7 @@
                 </div>
             </fieldset>
             <div class="button-row">
-                <button  type="submit" [disabled]="createForm.invalid" mat-raised-button
+                <button  type="submit" [class.spinner]="isSubmitting" [disabled]="createForm.invalid || isSubmitting " mat-raised-button
                     color="accent">{{createForm.value._id!==""?'update':'save'}}</button>
                 </div>
             </form>

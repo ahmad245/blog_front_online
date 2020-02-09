@@ -1,0 +1,16 @@
+.like{
+    z-index: 2000;
+    cursor: pointer;
+}
+::ng-deep .mat-mini-fab {
+    height:2.5rem ;
+    width:2.5rem ;
+}
+::ng-deep  .material-icons{
+   font-size: 1.5rem;
+}
+::ng-deep .wrapper {
+    padding: .5rem 0;
+    display: inline-block;
+    line-height: 1.5rem;
+}

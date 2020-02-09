@@ -13,29 +13,36 @@
 </div>
 <div class="container">
       <div class="row justify-content-end">
-        <div class="col col-sm-12 col-md-8 col-lg-9 ">
+        <div class="col-12col-sm-12 col-md-8 col-lg-9 ">
             <app-search ></app-search>
             <!-- <app-side-nav-tags> </app-side-nav-tags> -->
 
         </div>
       </div>
     <div class="row">
-        <div class="col col-sm-12 col-md-4 col-lg-3 ">
-            <!-- <app-search></app-search> -->
-            <app-side-nav>
-                <app-post-type></app-post-type>
-            </app-side-nav>
+        <div class="col-12 col-sm-12 col-md-4 col-lg-3 ">
+           <div class="row">
+            <div class="col-12 ">
+                <app-side-nav>
+                    <app-post-type></app-post-type>
+                </app-side-nav>
+            </div>
+            <div class="col-12 ">
+                 <app-side-nav-tags> </app-side-nav-tags>
+            </div>
+           </div>
+            
         </div>
-        <div class="col col-sm-12 col-md-8 col-lg-9 post_list">
+        <div class="col-12 col-sm-12 col-md-8 col-lg-9 post_list">
 
-            <mat-tab-group>
-                <mat-tab label="Global Feed">
+            <mat-tab-group (selectedTabChange)="getProfile()">
+                <mat-tab  label="Global Feed">
                   
                     <app-post-list ></app-post-list>
 
                 </mat-tab>
-                <mat-tab color="accent" label="Your Feed"> 
-                     <app-profile-posts></app-profile-posts>
+                <mat-tab   color="accent" label="Your Feed"> 
+                     <app-profile-posts *ngIf="isProfiled" ></app-profile-posts>
                 </mat-tab>
             </mat-tab-group>
 
